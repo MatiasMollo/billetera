@@ -2,7 +2,7 @@ import json
 import re
 
 USER_PATH = 'data/users.json'
-VALID_FIELDS = ['nombre','apellido','historial_crediticio','dinero']
+VALID_FIELDS = ['nombre','apellido','historial_crediticio','dinero','password']
 
 def getUser(username = None):
     """
@@ -76,10 +76,30 @@ def createUser(username,userData):
     file.close()
     return ret,message
 
+def login(username,password):
+    """
+        Define si la contraseña del usuario es válida
 
-print(createUser('Matiass07_34',{
-    "nombre" : "Matias",
-    "apellido" : "Mollo",
-    "historial_crediticio" : 10,
-    "dinero" : 100,
-}))
+        Parámetros:
+            username (String)
+            password (String)
+    """
+    ret = False
+    
+    with open(USER_PATH,'r') as file:
+        data = json.load(file)
+        file.close()
+
+    if username in data:
+        if 'password' in data[username] and data[username]['password'] == password:
+            ret = True
+
+    return ret
+
+# print(createUser('Matiass07_34',{
+#     "nombre" : "Matias",
+#     "apellido" : "Mollo",
+#     "password" : "12345",
+#     "historial_crediticio" : 10,
+#     "dinero" : 100,
+# }))
