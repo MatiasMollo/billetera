@@ -2,6 +2,7 @@ import json
 import re
 
 USER_PATH = 'data/users.json'
+VALID_FIELDS = ['nombre','apellido','historial_crediticio','dinero']
 
 def getUser(username = None):
     """
@@ -20,24 +21,30 @@ def getUser(username = None):
         user = data
     else:
         user = False
+
     file.close()
     return user
 
 
-def validUserName(userName):
+def validUsername(username):
     """
-        Verifica que el nombre de usuario siga un patron especifico
+        Verifica que el nombre de usuario siga un patron especifico y sea único en el archivo JSON
         Parámetros:
         userName (String): Nombre de usuario
         
     """
-    pattern = r'^[A-Za-z0-9]+$'
-    
-    if re.match(pattern, userName):
-        return True 
-    else:
-        return False 
+    with open(USER_PATH,'r') as file:
+        users = json.load(file)
+        file.close()
 
+    pattern = r'^[A-Za-z0-9_-]+$'
+    return re.match(pattern,username) and username not in users
+
+def validStruct(user):
+    """
+        Valida que la estructura del usuario sea válida
+    """
+    return set(VALID_FIELDS).issubset(set(user))
 
 def createUser(username,userData):
     """
@@ -50,23 +57,29 @@ def createUser(username,userData):
         userData (Dict): Estructura del usuario
     """
     ret = False
-    #! Verificar que no se repita el nombre de usuario
-    #! Filtrar datos de nombre de usuario
-    #! Falta validar la estructura del usuario
+    message = "El usuario es inválido o ya existe, intente nuevamente."
 
     with open(USER_PATH,'r') as file:
         data = json.load(file)
 
-    if username not in data:
+    struct = validStruct(userData)
+    if not struct:
+        message = "La estructura de usuario no es válida"
+
+    if validUsername(username) and struct:
         data[username] = userData
+        message = "Se creó el usuario correctamente"
         with open(USER_PATH,'w') as file:
             json.dump(data,file)
             ret = True
 
     file.close()
-    return ret
+    return ret,message
 
 
-print(createUser('Matiass06',{
-    "nombre" : "Matias"
+print(createUser('Matiass07_34',{
+    "nombre" : "Matias",
+    "apellido" : "Mollo",
+    "historial_crediticio" : 10,
+    "dinero" : 100,
 }))
