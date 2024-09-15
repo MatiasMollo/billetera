@@ -42,9 +42,11 @@ def validUsername(username):
 
 def validStruct(user):
     """
-        Valida que la estructura del usuario sea válida
+        Valida que la estructura del usuario sea válida y no haya valores vacíos
     """
-    return set(VALID_FIELDS).issubset(set(user))
+    struct = set(VALID_FIELDS).issubset(set(user))
+    values = [element for element in dict(user).values() if element != ""]
+    return struct and len(values) == len(user)
 
 def createUser(username,userData):
     """
@@ -57,7 +59,7 @@ def createUser(username,userData):
         userData (Dict): Estructura del usuario
     """
     ret = False
-    message = "El usuario es inválido o ya existe, intente nuevamente."
+    message = "El nombre de usuario ya existe o es inválido."
 
     with open(USER_PATH,'r') as file:
         data = json.load(file)

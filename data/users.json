@@ -25,6 +25,20 @@
     },
     "Matiass07_34": {
         "nombre": "Matias07",
-        "password" : "1234"
+        "password": "1234"
+    },
+    "Pepe11": {
+        "nombre": "Pepe",
+        "apellido": "11",
+        "password": "pedropedropedropedrope",
+        "historial_crediticio": 0,
+        "dinero": 0
+    },
+    "sad": {
+        "nombre": "dsa",
+        "apellido": "",
+        "password": "",
+        "historial_crediticio": 0,
+        "dinero": 0
     }
 }
