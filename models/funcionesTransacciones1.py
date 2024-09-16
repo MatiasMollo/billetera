@@ -1,4 +1,6 @@
 
+import datetime
+
 #Uso de tuplas en el TPO
 
 totalTransacciones = 231
@@ -49,6 +51,14 @@ transacciones = {
 
 #En esta función debo agregar el destinatario si el alias del receptor está en nuestra base.
 #Revisar cómo está pensado en el main
+
+def registrarFecha():
+    hoy = datetime.datetime.now()
+    fechaActual = (hoy.year, hoy.month, hoy.day)
+
+    return fechaActual
+
+
 def registrarTransaccion(nombreUsuario, tipoTransaccion, monto, fecha, totalTransacciones):
     #Se podrían hacer todas las preguntas dentro de esta función o afuera y luego se registran acá
 
@@ -69,6 +79,8 @@ def registrarTransaccion(nombreUsuario, tipoTransaccion, monto, fecha, totalTran
 
 
 #En el main habría una opción para elegir esta función
+#Falta usar también el nombre de usuario en la lógica
+
 def mostrarTransaccionesPorFecha(nombreUsuario, transacciones):
     #Estas fechas se preguntan acá y se valida el formato. Para esta prueba están asignadas
     fechaInicial = (2024, 8, 15)
