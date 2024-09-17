@@ -143,19 +143,6 @@ def calcularTotalTransaccionesUsuario(nombreUsuario, transacciones):
     return len(corte)
 
 
-def mostrarMenu():
-    
-    print("===================")
-    print("1. Ingresar dinero")
-    print("2. Enviar dinero")
-    print("3. Pagar servicio")
-    print("4. Ver movimientos")
-    print("5. Salir")
-    print("===================")
-
-    return [1,2,3]
-
-
 #Programa principal
 nombreUsuario = "Dani333_"
 tipoTransaccion = "envio"
@@ -173,7 +160,3 @@ totalTransacciones += 1
 # mostrarTransaccionesPorOrden(nombreUsuario, transacciones)
 mostrarTransaccionesPorTipo(nombreUsuario, transacciones)
 print(calcularTotalTransaccionesUsuario(nombreUsuario, transacciones))
-
-
-print("Seleccione la operación a ejecutar:")
-mostrarMenu()

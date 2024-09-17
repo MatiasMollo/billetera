@@ -98,6 +98,14 @@ def login(username,password):
 
     return ret
 
+
+def verificarDNIunico(dni, users):
+    for user in users.values():
+        if user["dni"] == dni:
+            return True
+    return False
+
+
 # print(createUser('Matiass07_34',{
 #     "nombre" : "Matias",
 #     "apellido" : "Mollo",
