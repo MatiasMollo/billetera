@@ -106,10 +106,3 @@ def verificarDNIunico(dni, users):
     return False
 
 
-# print(createUser('Matiass07_34',{
-#     "nombre" : "Matias",
-#     "apellido" : "Mollo",
-#     "password" : "12345",
-#     "historial_crediticio" : 10,
-#     "dinero" : 100,
-# }))

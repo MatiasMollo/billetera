@@ -1,7 +1,16 @@
 import models.users as user
 import models.transactions as transaction
 
-def imprimirLogin():
+MENU = {
+    "1. Ingresar dinero" : "transaction.ingresarDinero",
+    "2. Enviar dinero": "transaction.sendMoney",
+    "3. Pagar servicio": "transaction.pagarServicio",
+    "4. Ver movimientos" : "transaction.verMovimientos",
+    "5. Pedir tarjeta" : "transaction.pedirTarjeta",
+    "6. Salir" : []
+}
+
+def printLogin():
     """
         Muestra las opciones de inicio de sesión
 
@@ -17,8 +26,20 @@ def imprimirLogin():
 
     return [1,2,3]
 
+def printMenu():
+    """
+        Muestra las opciones del menú
+    """
+
+    print("\n===================")
+    for option in MENU.keys():
+        print(option)
+    print("===================")
+
+    return range(1,len(MENU)+1)
+
 print("Bienvenido a su billetera virtual, seleccione una opción del menú")
-validOptions = imprimirLogin()
+validOptions = printLogin()
 opcion = int(input("Opción: "))
 
 #Verificación de opción válida
@@ -67,4 +88,16 @@ elif opcion == 2: #Registro de usuario
             retry = False
         else:
             retry = True if input("\n¿Desea intentarlo nuevamente? S/N: ") in ['S','s'] else False
+
+if logged:
+    printMenu()
+    salir = 6
+    option = int(input("Ingrese su opción: "))
+    
+    while option != salir:
+        print(MENU[list(MENU.keys())[option-1]])#()
+        option = int(input("Ingrese su opción: "))
+
+else:
+    print("Se ha finalizado el programa")
         
