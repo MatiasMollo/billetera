@@ -1,7 +1,8 @@
 import models.users as user
 import models.transactions as transaction
 
-def imprimirLogin():
+
+def showLogin():
     """
         Muestra las opciones de inicio de sesión
 
@@ -17,9 +18,24 @@ def imprimirLogin():
 
     return [1,2,3]
 
+
+def showMenu():
+    
+    print("===================")
+    print("1. Ingresar dinero")
+    print("2. Enviar dinero")
+    print("3. Pagar servicio")
+    print("4. Ver movimientos")
+    print("5. Pedir tarjeta")
+    print("===================")
+
+    return [1, 2, 3, 4, 5]
+
+
 print("Bienvenido a su billetera virtual, seleccione una opción del menú")
-validOptions = imprimirLogin()
+validOptions = showLogin()
 opcion = int(input("Opción: "))
+
 
 #Verificación de opción válida
 while opcion not in validOptions:

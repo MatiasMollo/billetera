@@ -5,46 +5,62 @@ import datetime
 
 totalTransacciones = 231
 
+users = {
+    'Matiass07_34': {
+    "nombre" : "Matias",
+    "apellido" : "Mollo",
+    "password" : "12345",
+    "historial_crediticio" : 10,
+    "dinero" : 100,
+}
+}
+
 transacciones = {
     (1, (2024, 8, 20)): {
         "nombre_usuario": "Dani333_",
         "tipo_transaccion": "ingreso",
-        "monto": 10853,
+        "monto": 10853.00,
+        "tarjeta origen": "1234 9855 8866 1022",
     },
     (2, (2024, 8, 24)): {
         "nombre_usuario": "Dani333_",
-        "tipo_transaccion": "envio",
-        "monto": 4000,
+        "tipo_transaccion": "envioExterno",
+        "monto": 4000.00,
+        "CVU_destino": "1344",
     },
     (3, (2024, 8, 30)): {
         "nombre_usuario": "Dani333_",
         "tipo_transaccion": "ingreso",
-        "monto": 10853,
+        "monto": 10853.00,
     },
     (4, (2024, 9, 7)): {
         "nombre_usuario": "Carlos12",
-        "tipo_transaccion": "envio",
-        "monto": 4000,
+        "tipo_transaccion": "pagoServicio",
+        "monto": 4000.00,
+        "servicio": "Edenor",
+        "numero_factura": "455666",
     },
     (5, (2024, 9, 10)): {
         "nombre_usuario": "Dani333_",
         "tipo_transaccion": "ingreso",
-        "monto": 10853,
+        "monto": 10853.00,
     },
     (6, (2024, 9, 11)): {
         "nombre_usuario": "Jose_29",
-        "tipo_transaccion": "envio",
-        "monto": 4000,
+        "tipo_transaccion": "envioInterno",
+        "monto": 4000.00,
+        "CVU_destino": "1344",
     },
     (7, (2024, 9, 14)): {
         "nombre_usuario": "Dani333_",
         "tipo_transaccion": "ingreso",
-        "monto": 10853,
+        "monto": 10853.00,
     },
     (8, (2024, 9, 15)): {
         "nombre_usuario": "Dani333_",
-        "tipo_transaccion": "envio",
-        "monto": 4000,
+        "tipo_transaccion": "envioInterno",
+        "monto": 4000.00,
+        "CVU_destino": "1344",
     }
 }
 
@@ -59,6 +75,58 @@ def registrarFecha():
     return fechaActual
 
 
+def sendMoney(nombreUsuario):
+    print("===================")
+    print("1. Enviar a una cuenta de Bankando")
+    print("2. Enviar a una cuenta de otro banco")
+    print("===================")
+    opcion = int(input())
+    while opcion != 1 and opcion != 2:
+        print("Por favor, elija una opción válida (1 ó 2)")
+        opcion = int(input())
+    if opcion == 1:
+        tipoTransaccion = "envioInterno"
+    else:
+        tipoTransaccion = "envioExterno"
+    cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino")
+    monto = float(input("Ingrese el monto que desea enviar: "))
+    while not checkBalance:
+        print("No hay dinero suficiente en su cuenta")
+        monto = float(input("Ingrese el monto que desea enviar: "))
+    saldo = reduceBalance()
+    if tipoTransaccion == 2:
+        if #usuario no está (mensaje)
+        else:
+            increaseBalance(CVU)
+
+    return cuentaDestino, monto, saldo
+
+
+def checkBalance(monto, nombreUsuario):
+    for usuario, valores in users.items(): 
+        if usuario == nombreUsuario:
+            saldo = valores["monto"]
+    if saldo >= monto:
+        return True
+    return False
+
+
+def reduceBalance(monto, nombreUsuario):
+    for usuario, valores in users.items(): 
+        if usuario == nombreUsuario:
+            saldo = valores["monto"]
+            saldo = saldo - monto
+            valores["monto"] = saldo    
+
+
+def increaseBalance():
+    for usuario, valores in users.items(): 
+        if usuario == nombreUsuario:
+            saldo = valores["monto"]
+            saldo = saldo + monto
+            valores["monto"] = saldo
+
+
 def registrarTransaccion(nombreUsuario, tipoTransaccion, monto, fecha, totalTransacciones):
     #Se podrían hacer todas las preguntas dentro de esta función o afuera y luego se registran acá
 
@@ -67,12 +135,25 @@ def registrarTransaccion(nombreUsuario, tipoTransaccion, monto, fecha, totalTran
     nuevaTransaccion["tipo_transaccion"] = tipoTransaccion
     nuevaTransaccion["monto"] = monto
 
+
+    # if tipoTransaccion == "ingreso":
+    #     pass
+    # elif tipoTransaccion == "envioInterno":
+    #     pass
+    # elif tipoTransaccion == "envioExterno":
+    #     pass
+    # elif tipoTransaccion == "pagoServicio":
+    #     pass
+
+
     totalTransacciones += 1
     tuplaTransaccion = (totalTransacciones, fecha) #asumiendo que fecha ya viene como tupla
 
     transacciones[tuplaTransaccion] = nuevaTransaccion
 
     return totalTransacciones
+
+
 
 
 #Crear funciones para balances de cuenta
@@ -143,19 +224,6 @@ def calcularTotalTransaccionesUsuario(nombreUsuario, transacciones):
     return len(corte)
 
 
-def mostrarMenu():
-    
-    print("===================")
-    print("1. Ingresar dinero")
-    print("2. Enviar dinero")
-    print("3. Pagar servicio")
-    print("4. Ver movimientos")
-    print("5. Salir")
-    print("===================")
-
-    return [1,2,3]
-
-
 #Programa principal
 nombreUsuario = "Dani333_"
 tipoTransaccion = "envio"
@@ -176,4 +244,10 @@ print(calcularTotalTransaccionesUsuario(nombreUsuario, transacciones))
 
 
 print("Seleccione la operación a ejecutar:")
-mostrarMenu()
+validOptions = showMenu()
+opcion = int(input("Opción: "))
+
+#Verificación de opción válida
+while opcion not in validOptions:
+    print("La opción no es válida, intente nuevamente: ")
+    opcion = input("Opción: ")
