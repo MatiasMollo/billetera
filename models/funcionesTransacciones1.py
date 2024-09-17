@@ -87,16 +87,65 @@ def mostrarTransaccionesPorFecha(nombreUsuario, transacciones):
     fechaFinal = (2024, 9, 15)
     #Este dato también se pregunta acá. Para esta prueba está asignado
     tipoTransaccion = "envio"
-    numero = 3
+    numero = 8
+    totalUsuario = calcularTotalTransaccionesUsuario(nombreUsuario, transacciones)
+    if numero > totalUsuario:
+        numero = totalUsuario
     
     corte = [(clave[1], valor) for clave, valor in transacciones.items() if clave[1] >= fechaInicial and clave[1] <= fechaFinal and valor["tipo_transaccion"] == tipoTransaccion]
     corteOrdenado = sorted(corte, key= lambda x: x[0])
-    print(corteOrdenado[(numero * -1):])
+    if numero >= len(corteOrdenado):
+        print(corteOrdenado)
+    else:
+        print(corteOrdenado[len(corteOrdenado) - numero:])
+
+
+def mostrarTransaccionesPorOrden(nombreUsuario, transacciones):
+    #Estas fechas se preguntan acá y se valida el formato. Para esta prueba están asignadas
+    fechaInicial = (2024, 8, 15)
+    fechaFinal = (2024, 9, 15)
+    #Este dato también se pregunta acá. Para esta prueba está asignado
+    tipoTransaccion = "envio"
+    numero = 10
+    totalUsuario = calcularTotalTransaccionesUsuario(nombreUsuario, transacciones)
+    if numero > totalUsuario:
+        numero = totalUsuario
+    
+    corte = [(clave[0], valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
+    corteOrdenado = sorted(corte, key= lambda x: x[0])
+    if numero >= len(corteOrdenado):
+        print(corteOrdenado)
+    else:
+        print(corteOrdenado[len(corteOrdenado) - numero:])
+
+
+def mostrarTransaccionesPorTipo(nombreUsuario, transacciones):
+    #Estas fechas se preguntan acá y se valida el formato. Para esta prueba están asignadas
+    fechaInicial = (2024, 8, 15)
+    fechaFinal = (2024, 9, 15)
+    #Este dato también se pregunta acá. Para esta prueba está asignado
+    tipoTransaccion = "envio"
+    numero = 3
+    totalUsuario = calcularTotalTransaccionesUsuario(nombreUsuario, transacciones)
+    if numero > totalUsuario:
+        numero = totalUsuario
+    
+    corte = [(clave[0], valor) for clave, valor in transacciones.items() if valor["tipo_transaccion"] == tipoTransaccion]
+    corteOrdenado = sorted(corte, key= lambda x: x[0])
+    if numero >= len(corteOrdenado):
+        print(corteOrdenado)
+    else:
+        print(corteOrdenado[len(corteOrdenado) - numero:])
+
+
+def calcularTotalTransaccionesUsuario(nombreUsuario, transacciones):
+    corte = [(clave[0], valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
+    return len(corte)
 
 
 #Programa principal
 nombreUsuario = "Dani333_"
-tipoTransaccion = "pago"
+tipoTransaccion = "envio"
 monto = 1456
 fecha = tuple([2024, 9, 15])
 
@@ -107,3 +156,7 @@ totalTransacciones += 1
 # print()
 # print(transacciones[numeroTransaccion, fecha])
 # print(totalTransacciones)
+
+# mostrarTransaccionesPorOrden(nombreUsuario, transacciones)
+mostrarTransaccionesPorTipo(nombreUsuario, transacciones)
+print(calcularTotalTransaccionesUsuario(nombreUsuario, transacciones))
