@@ -12,8 +12,8 @@ def getUser(username = None):
     
     username (None | String): Nombre de usuario
     """
-    with open(USER_PATH,'r') as file:
-        data = json.load(file)
+    file = open(USER_PATH,'r')
+    data = json.loads(file.read())
         
     if username != None and username in data: 
         user = data[username]
@@ -33,9 +33,9 @@ def validUsername(username):
         userName (String): Nombre de usuario
         
     """
-    with open(USER_PATH,'r') as file:
-        users = json.load(file)
-        file.close()
+    file = open(USER_PATH,'r')
+    users = json.loads(file.read())
+    file.close()
 
     pattern = r'^[A-Za-z0-9_-]+$'
     return re.match(pattern,username) and username not in users
@@ -61,8 +61,8 @@ def createUser(username,userData):
     ret = False
     message = "El nombre de usuario ya existe o es inválido."
 
-    with open(USER_PATH,'r') as file:
-        data = json.load(file)
+    file = open(USER_PATH,'r')
+    data = json.loads(file.read())
 
     struct = validStruct(userData)
     if not struct:
@@ -88,9 +88,9 @@ def login(username,password):
     """
     ret = False
     
-    with open(USER_PATH,'r') as file:
-        data = json.load(file)
-        file.close()
+    file = open(USER_PATH,'r')
+    data = json.loads(file.read())
+    file.close()
 
     if username in data:
         if 'password' in data[username] and data[username]['password'] == password:
@@ -104,5 +104,3 @@ def verificarDNIunico(dni, users):
         if user["dni"] == dni:
             return True
     return False
-
-

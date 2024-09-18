@@ -40,5 +40,12 @@
         "password": "",
         "historial_crediticio": 0,
         "dinero": 0
+    },
+    "Matii": {
+        "nombre": "Matias",
+        "apellido": "Mollo",
+        "password": "asd",
+        "historial_crediticio": 0,
+        "dinero": 0
     }
 }
