@@ -92,6 +92,12 @@ def registrarFecha():
     return fechaActual
 
 
+def checkFormat(cuentaDestino):
+    if len(cuentaDestino) == 11:
+        return True
+    return False
+
+
 def sendMoney(nombreUsuario, users):
     print("===================")
     print("1. Enviar a una cuenta de Bankando")
@@ -105,20 +111,26 @@ def sendMoney(nombreUsuario, users):
         tipoTransaccion = "envioInterno"
     else:
         tipoTransaccion = "envioExterno"
-    cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
     monto = float(input("Ingrese el monto que desea enviar: "))
     while not checkBalance(monto, nombreUsuario, users):
         print("No hay dinero suficiente en su cuenta")
         monto = float(input("Ingrese el monto que desea enviar: "))
-    if tipoTransaccion == 2:
-        if not checkCVU(cuentaDestino):
+    cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+    while not checkFormat(cuentaDestino):
+        print("Formato incorrecto. Revise el número y vuelva a intentar")
+        cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+    if tipoTransaccion == "envioInterno":
+        while not checkCVU(cuentaDestino, users):
             print("No existe esa cuenta en Bankando. Revise el número de CVU")
-        else:
-            increaseBalance(cuentaDestino, monto, users)
+            cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+            while not checkFormat(cuentaDestino):
+                print("Formato incorrecto. Revise el número y vuelva a intentar")
+                cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+        increaseBalance(cuentaDestino, monto, users)
     saldo = decreaseBalance(monto, nombreUsuario, users)
     print(f"Su dinero ha sido enviado. Su nuevo saldo es {saldo}")
 
-    return cuentaDestino, monto, saldo, tipoTransaccion, nombreUsuario
+    return cuentaDestino, monto, saldo, tipoTransaccion
 
 
 def checkBalance(monto, nombreUsuario, users):
@@ -129,9 +141,9 @@ def checkBalance(monto, nombreUsuario, users):
     return False
 
 
-def checkCVU(CVU, users):
-    for clave, valor in users.items:
-        if valor["CVU"] == CVU:
+def checkCVU(cuentaDestino, users):
+    for clave, valor in users.items():
+        if valor["CVU"] == cuentaDestino:
             return True
     return False
 
@@ -140,15 +152,19 @@ def decreaseBalance(monto, nombreUsuario, users):
     if nombreUsuario in users:
         saldo = users[nombreUsuario]["dinero"]
         saldo = saldo - monto
-        users[nombreUsuario]["dinero"] = saldo  
+        users[nombreUsuario]["dinero"] = saldo
+    
+    return saldo
 
 
 def increaseBalance(CVU, monto, users):
-    for clave, valor in users.items:
+    for clave, valor in users.items():
         if valor["CVU"] == CVU:
             saldo = valor["dinero"]
             saldo = saldo + monto
             valor["dinero"] = saldo
+
+    return saldo
 
 
 #Revisar si hago todo esto en una sola función o en varias o si registro cada transacción en su propia función
@@ -267,7 +283,7 @@ def showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones):
     else:
         print(corteOrdenado[len(corteOrdenado) - cantidad:])
 
-
+#Chequear si funciona igual si no uso clave, pues solo estoy usando valor. How?
 def checkTotalUserTransactions(nombreUsuario, transacciones):
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
     return len(corte)
