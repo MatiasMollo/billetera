@@ -107,16 +107,18 @@ def sendMoney(nombreUsuario, users):
         tipoTransaccion = "envioExterno"
     cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
     monto = float(input("Ingrese el monto que desea enviar: "))
-    while not checkBalance:
+    while not checkBalance(monto, nombreUsuario, users):
         print("No hay dinero suficiente en su cuenta")
         monto = float(input("Ingrese el monto que desea enviar: "))
-    saldo = decreaseBalance()
     if tipoTransaccion == 2:
-        if #usuario no está (mensaje)
+        if not checkCVU(cuentaDestino):
+            print("No existe esa cuenta en Bankando. Revise el número de CVU")
         else:
-            increaseBalance(CVU)
+            increaseBalance(cuentaDestino, monto, users)
+    saldo = decreaseBalance(monto, nombreUsuario, users)
+    print(f"Su dinero ha sido enviado. Su nuevo saldo es {saldo}")
 
-    return cuentaDestino, monto, saldo
+    return cuentaDestino, monto, saldo, tipoTransaccion, nombreUsuario
 
 
 def checkBalance(monto, nombreUsuario, users):
@@ -127,19 +129,31 @@ def checkBalance(monto, nombreUsuario, users):
     return False
 
 
-def reduceBalance(monto, nombreUsuario, users):
-    saldo = users[nombreUsuario]["dinero"]
-    saldo = saldo - monto
-    users[nombreUsuario]["dinero"] = saldo  
+def checkCVU(CVU, users):
+    for clave, valor in users.items:
+        if valor["CVU"] == CVU:
+            return True
+    return False
 
 
-def increaseBalance():
-    saldo = users[nombreUsuario]["dinero"]
-    saldo = saldo - monto
-    users[nombreUsuario]["dinero"] = saldo
+def decreaseBalance(monto, nombreUsuario, users):
+    if nombreUsuario in users:
+        saldo = users[nombreUsuario]["dinero"]
+        saldo = saldo - monto
+        users[nombreUsuario]["dinero"] = saldo  
 
 
-def registrarTransaccion(nombreUsuario, tipoTransaccion, monto, fecha, totalTransacciones, transacciones):
+def increaseBalance(CVU, monto, users):
+    for clave, valor in users.items:
+        if valor["CVU"] == CVU:
+            saldo = valor["dinero"]
+            saldo = saldo + monto
+            valor["dinero"] = saldo
+
+
+#Revisar si hago todo esto en una sola función o en varias o si registro cada transacción en su propia función
+
+def registerTransaction(nombreUsuario, tipoTransaccion, monto, fecha, totalTransacciones, transacciones):
     #Se podrían hacer todas las preguntas dentro de esta función o afuera y luego se registran acá
 
     nuevaTransaccion = {}
@@ -168,66 +182,93 @@ def registrarTransaccion(nombreUsuario, tipoTransaccion, monto, fecha, totalTran
 #Falta usar también el nombre de usuario en la lógica
 
 
-def preguntarTipoTransaccion():
-    #print con las opciones
-    #input con el limite de 1-5 y while para validar
-    # if tipoTransaccion == "ingreso":
-    #     pass
-    # elif tipoTransaccion == "envioInterno":
-    #     pass
-    # elif tipoTransaccion == "envioExterno":
-    #     pass
-    # elif tipoTransaccion == "pagoServicio":
-    #     pass
-    #return opcion como string
+def showReports(nombreUsuario):
+    print("===================")
+    print("1. Mostrar movimientos por fecha")
+    print("2. Mostrar movimientos más recientes")
+    print("3. Mostrar movimientos por tipo de transacción")
+    print("===================")
+    opcion = int(input())
+    while opcion != 1 and opcion != 2 and opcion != 3:
+        print("Por favor, ingrese una opción correcta (1, 2 ó 3): ")
+        opcion = int(input())
+    if opcion == 1:
+        showTransactionsByDate(nombreUsuario, transacciones)
+    elif opcion == 2:
+        showMostRecentTransactions()
+    else:
+        tipoTransaccion = showTransactionsToChoose()
+        showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones)
 
 
-def mostrarTransaccionesPorFecha(nombreUsuario, tipoTransaccion, transacciones):
-    #Preguntar cuantos movimientos quiere
-    numero = 8
-    totalUsuario = calcularTotalTransaccionesUsuario(nombreUsuario, transacciones)
-    if numero > totalUsuario:
-        numero = totalUsuario
+def showTransactionsToChoose():
+    print("===================")
+    print("1. Carga de dinero en cuenta")
+    print("2. Envío de dinero a otra cuenta Bankando")
+    print("3. Envío de dinero a una cuenta de otro banco")
+    print("4. Pago de servicios")
+    print("===================")
+    opcion = int(input())
+    while opcion != 1 and opcion != 2 and opcion != 3 and opcion != 4:
+        print("Por favor, ingrese una opción correcta (1, 2, 3 ó 4): ")
+        opcion = int(input())
+    if opcion == 1:
+        tipoTransaccion == "ingreso"
+    elif opcion == 2:
+        tipoTransaccion == "envioInterno"
+    elif opcion == 3:
+        tipoTransaccion == "envioExterno"
+    else:
+        tipoTransaccion == "pagoServicio"
+    
+    return tipoTransaccion
+
+
+def showTransactionsByDate(nombreUsuario, tipoTransaccion, transacciones):
+    fechaInicial = input("Indique desde qué fecha desea consultar: ")
+    fechaFinal = input("Indique hasta qué fecha desea consultar: ")
+    # totalUsuario = calcularTotalTransaccionesUsuario(nombreUsuario, transacciones)
+    # if numero > totalUsuario:
+    #     numero = totalUsuario
     
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["fecha"] >= fechaInicial and valor["fecha"] <= fechaFinal and valor["tipo_transaccion"] == tipoTransaccion]
     corteOrdenado = sorted(corte)
-    if numero >= len(corteOrdenado):
-        print(corteOrdenado)
-    else:
-        print(corteOrdenado[len(corteOrdenado) - numero:])
+    # if numero >= len(corteOrdenado):
+    #     print(corteOrdenado)
+    # else:
+    #     print(corteOrdenado[len(corteOrdenado) - numero:])
+    return
 
 
-def mostrarTransaccionesPorOrden(nombreUsuario, tipoTransaccion, transacciones):
-    #Preguntar cuantos movimientos quiere
-    numero = 10
-    totalUsuario = calcularTotalTransaccionesUsuario(nombreUsuario, transacciones)
-    if numero > totalUsuario:
-        numero = totalUsuario
+def showMostRecentTransactions(nombreUsuario, tipoTransaccion, transacciones):
+    cantidad = int(input("Indique la cantidad de movimientos recientes que desea consultar: "))
+    totalUsuario = checkTotalUserTransactions(nombreUsuario, transacciones)
+    if cantidad > totalUsuario:
+        cantidad = totalUsuario
     
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
     corteOrdenado = sorted(corte)
-    if numero >= len(corteOrdenado):
+    if cantidad >= len(corteOrdenado):
         print(corteOrdenado)
     else:
-        print(corteOrdenado[len(corteOrdenado) - numero:])
+        print(corteOrdenado[len(corteOrdenado) - cantidad:])
 
 
-def mostrarTransaccionesPorTipo(nombreUsuario, transacciones):
-    #Preguntar cuantos movimientos quiere
-    numero = 3
-    totalUsuario = calcularTotalTransaccionesUsuario(nombreUsuario, transacciones)
-    if numero > totalUsuario:
-        numero = totalUsuario
+def showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones):
+    cantidad = int(input("Indique la cantidad de movimientos que desea consultar: "))
+    totalUsuario = checkTotalUserTransactions(nombreUsuario, transacciones)
+    if cantidad > totalUsuario:
+        cantidad = totalUsuario
     
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["tipo_transaccion"] == tipoTransaccion]
     corteOrdenado = sorted(corte)
-    if numero >= len(corteOrdenado):
+    if cantidad >= len(corteOrdenado):
         print(corteOrdenado)
     else:
-        print(corteOrdenado[len(corteOrdenado) - numero:])
+        print(corteOrdenado[len(corteOrdenado) - cantidad:])
 
 
-def calcularTotalTransaccionesUsuario(nombreUsuario, transacciones):
+def checkTotalUserTransactions(nombreUsuario, transacciones):
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
     return len(corte)
 
