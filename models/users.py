@@ -9,8 +9,7 @@ def getUser(username = None):
     Obtiene el usuario que recibe como parámetro, en caso de que este sea None, devuelve todos los usuarios del archivo JSON
 
     Parámetros:
-    
-    username (None | String): Nombre de usuario
+        username (None | String): Nombre de usuario
     """
     file = open(USER_PATH,'r')
     data = json.loads(file.read())
@@ -71,11 +70,11 @@ def createUser(username,userData):
     if validUsername(username) and struct:
         data[username] = userData
         message = "Se creó el usuario correctamente"
-        with open(USER_PATH,'w') as file:
-            json.dump(data,file)
-            ret = True
+        file = open(USER_PATH,'w')
+        json.dump(data,file)
+        file.close()
+        ret = True
 
-    file.close()
     return ret,message
 
 def login(username,password):

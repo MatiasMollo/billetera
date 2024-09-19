@@ -1,51 +1,42 @@
 {
-    "username_123": {
-        "nombre": "Matias"
-    },
-    "username_321": {
-        "nombre": "Gonzalo"
-    },
-    "Matiass03": {
-        "nombre": "Test1"
-    },
-    "Matiass04": {
-        "nombre": "Matias"
-    },
-    "Matiass05": {
-        "nombre": "Matias"
-    },
-    "Matiass06": {
-        "nombre": "Matias"
-    },
-    "Matiass07": {
-        "nombre": "Matias07"
-    },
-    "Matiass07-34": {
-        "nombre": "Matias07"
-    },
-    "Matiass07_34": {
-        "nombre": "Matias07",
-        "password": "1234"
-    },
     "Pepe11": {
         "nombre": "Pepe",
         "apellido": "11",
         "password": "pedropedropedropedrope",
         "historial_crediticio": 0,
-        "dinero": 0
+        "dinero": 0,
+        "CVU": "12345678901"
     },
     "sad": {
         "nombre": "dsa",
         "apellido": "",
         "password": "",
         "historial_crediticio": 0,
-        "dinero": 0
+        "dinero": 0,
+        "CVU": "12345678901"
     },
     "Matii": {
         "nombre": "Matias",
         "apellido": "Mollo",
         "password": "asd",
         "historial_crediticio": 0,
-        "dinero": 0
+        "dinero": 0,
+        "CVU": "12345678901"
+    },
+    "Mati2003": {
+        "nombre": "Matias",
+        "apellido": "Mollo",
+        "password": "cachengue",
+        "historial_crediticio": 0,
+        "dinero": 0,
+        "CVU": "12345678901"
+    },
+    "mmollo": {
+        "nombre": "Matias",
+        "apellido": "Mollo",
+        "password": "cachengue",
+        "historial_crediticio": 0,
+        "dinero": 0,
+        "CVU": "12345678901"
     }
 }

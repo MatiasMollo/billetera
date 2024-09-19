@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 totalTransacciones = 231
 
@@ -8,7 +8,7 @@ users = {
         "apellido" : "Mollo",
         "DNI": "12345561",
         "password" : "12345",
-        "CVU": "45567867773",
+        "CVU": "46557867773",
         "historial_crediticio" : 10,
         "dinero" : 50560.45,
     },
@@ -40,7 +40,7 @@ transacciones = {
     },
     3: {
         "nombre_usuario": "Dani333_",
-        "tipo_transaccion": "ingreso",
+        "tipo_transaccion": "pagoServicio",
         "fecha": (2024, 8, 30, 12, 10, 3),
         "monto": 10853.00,
     },
@@ -125,11 +125,11 @@ def sendMoney(nombreUsuario, users):
     print("1. Enviar a una cuenta de Bankando")
     print("2. Enviar a una cuenta de otro banco")
     print("===================")
-    opcion = int(input())
-    while opcion != 1 and opcion != 2:
+    opcion = input()
+    while opcion != "1" and opcion != "2":
         print("Por favor, elija una opción válida (1 ó 2): ")
-        opcion = int(input())
-    if opcion == 1:
+        opcion = input()
+    if opcion == "1":
         tipoTransaccion = "envioInterno"
     else:
         tipoTransaccion = "envioExterno"
@@ -154,17 +154,155 @@ def sendMoney(nombreUsuario, users):
 
     return cuentaDestino, monto, saldo, tipoTransaccion
 
+#Reportes
+def showReports(nombreUsuario, transacciones):
+    print("===================")
+    print("1. Mostrar movimientos por fecha")
+    print("2. Mostrar movimientos más recientes")
+    print("3. Mostrar movimientos por tipo de transacción")
+    print("===================")
+    opcion = input()
+    while opcion != "1" and opcion != "2" and opcion != "3":
+        print("Por favor, ingrese una opción correcta (1, 2 ó 3): ")
+        opcion = input()
+    if opcion == "1":
+        showTransactionsByDate(nombreUsuario, transacciones)
+    elif opcion == "2":
+        showMostRecentTransactions(nombreUsuario, transacciones)
+    else:
+        tipoTransaccion = chooseReportByTransaction()
+        showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones)
+
+
+def chooseReportByTransaction():
+    print("Seleccione el tipo de transacción que desea consultar")
+    print("===================")
+    print("1. Carga de dinero en cuenta")
+    print("2. Envío de dinero a otra cuenta Bankando")
+    print("3. Envío de dinero a una cuenta de otro banco")
+    print("4. Pago de servicios")
+    print("===================")
+    tipoTransaccion = ""
+    opcion = input()
+    while opcion != "1" and opcion != "2" and opcion != "3" and opcion != "4":
+        print("Por favor, ingrese una opción correcta (1, 2, 3 ó 4): ")
+        opcion = input()
+    if opcion == "1":
+        tipoTransaccion = "ingreso"
+    elif opcion == "2":
+        tipoTransaccion = "envioInterno"
+    elif opcion == "3":
+        tipoTransaccion = "envioExterno"
+    else:
+        tipoTransaccion = "pagoServicio"
+    
+    return tipoTransaccion
+
+
+def checkInteger(string):
+    return string.isdigit()
+
+
+def checkDate(fechaString):
+    formato = "%Y-%m-%d"  #Formato necesario: Año-Mes-Día
+    try:
+        #Para convertir el string en una fecha válida
+        fechaValida = datetime.strptime(fechaString, formato)
+        
+        #Si es válida, devuelve la tupla (año, mes, día)
+        return (fechaValida.year, fechaValida.month, fechaValida.day)
+    
+    except ValueError:
+        #Si no es válida, advertimos que la fecha es incorrecta
+        print("Fecha inválida. Verifique el uso del formato correcto: Año-Mes-Día(yyyy-mm-dd)")
+        
+        return None
+
+
+def showTransactionsByDate(nombreUsuario, transacciones):
+    fechaUsuarioInicial = input("Indique desde qué fecha desea consultar (yyyy-mm-dd): ")
+    fechaInicial = checkDate(fechaUsuarioInicial)
+    while fechaInicial == None:
+        print()
+        fechaUsuarioInicial = input("Indique desde qué fecha desea consultar (yyyy-mm-dd): ")
+        fechaInicial = checkDate(fechaUsuarioInicial)
+        
+    fechaUsuarioFinal = input("Indique hasta qué fecha desea consultar: ")
+    fechaFinal = checkDate(fechaUsuarioFinal)
+    while fechaFinal == None:
+        print()
+        fechaUsuarioFinal = input("Indique hasta qué fecha desea consultar: ")
+        fechaFinal = checkDate(fechaUsuarioFinal)
+    
+    
+    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario and valor["fecha"] >= fechaInicial and valor["fecha"] <= fechaFinal]
+    corteOrdenado = sorted(corte)
+    if len(corte) != 0:
+        print(corteOrdenado)
+    else:
+        print("No se encontraron movimientos en esas fechas")
+
+
+def showMostRecentTransactions(nombreUsuario, transacciones):
+    cantidad = input("Indique la cantidad de movimientos recientes que desea consultar: ")
+    while not checkInteger(cantidad):
+        print("Opción inválida. Por favor, asegúrese de ingresar un número entero")
+        print()
+        cantidad = input("Indique la cantidad de movimientos recientes que desea consultar: ")
+    cantidad = int(cantidad)
+
+    totalUsuario = checkTotalUserTransactions(nombreUsuario, transacciones)
+    if cantidad > totalUsuario:
+        cantidad = totalUsuario
+    
+    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
+    corteOrdenado = sorted(corte)
+    if cantidad >= len(corteOrdenado):
+        print(corteOrdenado)
+    elif len(corte) == 0:
+        print("Usted no tiene movimientos registrados")    
+    else:
+        #Le resta al total de transacciones (ej: 8) la cantidad indicada (ej: 3) para mostrar sólo las últimas posiciones (ej: 5-7)
+        print(corteOrdenado[len(corteOrdenado) - cantidad:])
+
+
+def showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones):
+    cantidad = input("Indique la cantidad de movimientos recientes que desea consultar: ")
+    while not checkInteger(cantidad):
+        print("Opción inválida. Por favor, asegúrese de ingresar un número entero")
+        print()
+        cantidad = input("Indique la cantidad de movimientos recientes que desea consultar: ")
+    cantidad = int(cantidad)
+    
+    totalUsuario = checkTotalUserTransactions(nombreUsuario, transacciones)
+    if cantidad > totalUsuario:
+        cantidad = totalUsuario
+    
+    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario and valor["tipo_transaccion"] == tipoTransaccion]
+    corteOrdenado = sorted(corte)
+    if cantidad >= len(corteOrdenado):
+        print(corteOrdenado)
+    else:
+        print(corteOrdenado[len(corteOrdenado) - cantidad:])
+
+#Chequear si funciona igual si no uso clave, pues solo estoy usando valor. How?
+def checkTotalUserTransactions(nombreUsuario, transacciones):
+    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
+    return len(corte)
+
 
 nombreUsuario = "Dani333_"
 # monto = 2500.16
 # cuentaDestino = "445611222"
 cuentaDestino, monto, saldo, tipoTransaccion = sendMoney(nombreUsuario, users)
 print(users)
-print(cuentaDestino)
-print(monto)
-print(saldo)
-print(tipoTransaccion)
-print(users)
+# print(cuentaDestino)
+# print(monto)
+# print(saldo)
+# print(tipoTransaccion)
+# print(users)
+# showReports(nombreUsuario, transacciones)
+
 
 
 

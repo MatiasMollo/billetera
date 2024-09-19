@@ -1,0 +1,72 @@
+{
+    "1": {
+        "nombre_usuario": "Dani333_",
+        "tipo_transaccion": "ingreso",
+        "fecha": "(2024, 8, 20, 9, 30, 11)",
+        "monto": 10853,
+        "cuenta_origen": "12349855886"
+    },
+    "2": {
+        "nombre_usuario": "Dani333_",
+        "tipo_transaccion": "envioExterno",
+        "fecha": "(2024, 8, 24, 10, 19, 24)",
+        "monto": 4000,
+        "CVU_destino": "13441919001"
+    },
+    "3": {
+        "nombre_usuario": "Dani333_",
+        "tipo_transaccion": "ingreso",
+        "fecha": "(2024, 8, 30, 12, 10, 3)",
+        "monto": 10853,
+        "cuenta_origen": "18866710229"
+    },
+    "4": {
+        "nombre_usuario": "Carlos12",
+        "tipo_transaccion": "pagoServicio",
+        "fecha": "(2024, 9, 7, 16, 12, 41)",
+        "monto": 4000,
+        "numero_factura": "455666"
+    },
+    "5": {
+        "nombre_usuario": "Dani333_",
+        "tipo_transaccion": "ingreso",
+        "fecha": "(2024, 9, 10, 20, 32, 55)",
+        "monto": 10853,
+        "cuenta_origen": "44231710229"
+    },
+    "6": {
+        "nombre_usuario": "Jose_29",
+        "tipo_transaccion": "envioInterno",
+        "fecha": "(2024, 9, 11, 21, 8, 17)",
+        "monto": 4000,
+        "CVU_destino": "27298331344"
+    },
+    "7": {
+        "nombre_usuario": "Dani333_",
+        "tipo_transaccion": "ingreso",
+        "fecha": "(2024, 9, 14, 23, 11, 5)",
+        "monto": 10853,
+        "cuenta_origen": "73829076321"
+    },
+    "8": {
+        "nombre_usuario": "Dani333_",
+        "tipo_transaccion": "envioInterno",
+        "fecha": "(2024, 9, 15, 10, 45, 30)",
+        "monto": 4000,
+        "CVU_destino": "15364840299"
+    },
+    "9": {
+        "nombre_usuario": "mmollo",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            9,
+            19,
+            19,
+            49,
+            58
+        ],
+        "monto": 100,
+        "cuenta_origen": "12345678901"
+    }
+}

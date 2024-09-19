@@ -2,7 +2,7 @@ import models.users as user
 import models.transactions as transaction
 
 MENU = {
-    "1. Ingresar dinero" : transaction.increaseBalance,
+    "1. Ingresar dinero" : transaction.depositMoney,
     "2. Enviar dinero": transaction.sendMoney,
     "3. Ver movimientos" : transaction.showReports,
     "4. Pedir tarjeta" : "transaction.pedirTarjeta",
@@ -94,11 +94,12 @@ elif opcion == 2: #Registro de usuario
 if logged:
     printMenu()
     option = int(input("Ingrese su opción: "))
+    users = user.getUser()
     
     while option != SALIR:
         if option in range(1,len(MENU)):
-            #Hace el llamado a la función correspondiente y pasa el usuario autenticado
-            MENU[list(MENU.keys())[option-1]](logged) 
+            #Hace el llamado a la función correspondiente y pasa el usuario autenticado junto con la lista completa de usuarios
+            MENU[list(MENU.keys())[option-1]](logged,users) 
             printMenu()
         else:
             print("La opción no es válida \n")
