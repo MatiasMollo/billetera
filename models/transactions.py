@@ -1,5 +1,5 @@
 
-import datetime
+from datetime import datetime
 
 totalTransacciones = 231
 
@@ -401,11 +401,11 @@ nombreUsuario = "Dani333_"
 # monto = 1456
 # fecha = registerDate()
 # cuentaDestino, monto, saldo, tipoTransaccion = sendMoney(nombreUsuario, users)
-# monto, saldo, tipoTransaccion = depositMoney(nombreUsuario, users)
-monto, saldo, tipoTransaccion = payUtilities(nombreUsuario, users)
-print(users)
-# print(cuentaDestino, monto, saldo, tipoTransaccion)
-# numeroTransaccion = registrarTransaccion(nombreUsuario, tipoTransaccion, monto, fecha, totalTransacciones)
-# totalTransacciones += 1
-print(transacciones)
-# showReports(nombreUsuario, transacciones)
+# # monto, saldo, tipoTransaccion = depositMoney(nombreUsuario, users)
+# monto, saldo, tipoTransaccion = payUtilities(nombreUsuario, users)
+# print(users)
+# # print(cuentaDestino, monto, saldo, tipoTransaccion)
+# # numeroTransaccion = registrarTransaccion(nombreUsuario, tipoTransaccion, monto, fecha, totalTransacciones)
+# # totalTransacciones += 1
+# print(transacciones)
+showReports(nombreUsuario, transacciones)
