@@ -8,7 +8,7 @@ users = {
         "apellido" : "Mollo",
         "DNI": "12345561",
         "password" : "12345",
-        "CVU": "45567867773",
+        "CVU": "46557867773",
         "historial_crediticio" : 10,
         "dinero" : 50560.45,
     },
