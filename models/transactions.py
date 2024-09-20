@@ -1,6 +1,5 @@
 
-import datetime
-# from datetime import datetime
+from datetime import datetime
 
 totalTransacciones = 231
 
@@ -70,7 +69,7 @@ transacciones = {
     },
     7: {
         "nombre_usuario": "Dani333_",
-        "tipo_transaccion": "ingreso",
+        "tipo_transaccion": "pagoServicio",
         "fecha": (2024, 9, 14, 23, 11, 5),
         "monto": 10853.00,
         "cuenta_origen": "73829076321",
@@ -86,7 +85,7 @@ transacciones = {
 
 #Registra la fecha y tiempo al momento de la transacción
 def registerDate():
-    hoy = datetime.datetime.now()
+    hoy = datetime.now()
     fechaActual = (hoy.year, hoy.month, hoy.day, hoy.hour, hoy.minute, hoy.second)
 
     return fechaActual
@@ -405,12 +404,15 @@ nombreUsuario = "Dani333_"
 # monto, saldo, tipoTransaccion = depositMoney(nombreUsuario, users)
 # monto, saldo, tipoTransaccion = payUtilities(nombreUsuario, users)
 # print(users)
-# # print(cuentaDestino, monto, saldo, tipoTransaccion)
+# print(cuentaDestino, monto, saldo, tipoTransaccion)
 # # numeroTransaccion = registrarTransaccion(nombreUsuario, tipoTransaccion, monto, fecha, totalTransacciones)
 # # totalTransacciones += 1
 # print(transacciones)
 showReports(nombreUsuario, transacciones)
-print()
-print(transacciones)
-print()
-print(users)
+# print()
+# print(transacciones)
+# print()
+# print(users)
+# print(showCVU(nombreUsuario, users))
+# print()
+# print(showBalance(nombreUsuario, users))
