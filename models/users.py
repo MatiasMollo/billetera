@@ -112,7 +112,8 @@ def increaseBalance(CVU,money,username = None):
 
     if username and username in users:
         # Método rápido, sin necesidad de recorrer todos los usuarios
-        users[username].update("dinero",users[username] + money)
+        users[username].update({"dinero" : users[username]['dinero'] + money})
+        saldo = users[username]['dinero']
         user_found = True
     else:
         #Método largo (cuando no tenemos nombre de usuario).s
@@ -122,7 +123,7 @@ def increaseBalance(CVU,money,username = None):
                 user_found = True
 
                 #Actualización de dinero en cuenta
-                users[keys[index]].update({"dinero": users[keys[index]]["dinero"] + money})
+                users[keys[index]].update({"dinero" : users[keys[index]]["dinero"] + money})
 
                 #Variable que retorna informando el nuevo saldo
                 saldo = users[keys[index]]["dinero"]
@@ -135,6 +136,36 @@ def increaseBalance(CVU,money,username = None):
         file.close()
     
     return user_found,saldo
+
+def decreaseBalance(money,username):
+    """
+        Disminuye el saldo del usuario
+    """
+    users = getUser()
+    user_found = False
+    saldo = 0
+
+    if username in users:
+        user_found = True
+        saldo = float(users[username]['dinero'] - money)
+        users[username].update({"dinero": saldo})
+
+        file = open(USER_PATH,'w')
+        json.dump(users,file)
+        file.close()
+    
+    return user_found, saldo
+
+
+def getBalance(username):
+    saldo = 0
+
+    users = getUser()
+
+    if username in users:
+        saldo = users[username]["dinero"]
+
+    return saldo
 
 def verificarDNIunico(dni, users):
     for user in users.values():

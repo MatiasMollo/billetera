@@ -28,7 +28,7 @@
         "apellido": "Mollo",
         "password": "cachengue",
         "historial_crediticio": 0,
-        "dinero": 220,
+        "dinero": 1620.0,
         "CVU": "12345678902"
     },
     "mmollo": {
@@ -36,7 +36,7 @@
         "apellido": "Mollo",
         "password": "cachengue",
         "historial_crediticio": 0,
-        "dinero": 1450,
+        "dinero": 1029.0,
         "CVU": "12345678901"
     }
 }

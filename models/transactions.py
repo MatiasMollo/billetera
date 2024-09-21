@@ -43,18 +43,9 @@ def checkFormat(cuentaDestino):
 #Deposita dinero a la cuenta del usuario que viene de una cuenta externa
 def depositMoney(nombreUsuario, users):
     monto = float(input("Ingrese el monto que desea depositar en su cuenta: "))
-    #! Cuenta origen no debería necesitarse ya que el usuario está logueado
-    cuentaOrigen = input("Ingrese el CBU o CVU de la cuenta origen de los fondos: ")
-
-    while not checkFormat(cuentaOrigen):
-        print("Formato incorrecto. Revise el número y vuelva a intentar")
-        cuentaOrigen = input("Ingrese el CBU o CVU de la cuenta origen de los fondos: ")
-        
-    dataUsuario = users.get(nombreUsuario)
-    cuentaDestino = dataUsuario.get("CVU")
+    cuentaOrigen = cuentaDestino = users[nombreUsuario]["CVU"]
 
     #Se ingresa el dinero en la cuenta destino de Bankando
-    #! saldo = increaseBalance(cuentaDestino, monto, users)
     ret,saldo = usuarios.increaseBalance(cuentaDestino,monto,nombreUsuario)
     if ret:
         print(f"\nSu dinero ha sido depositado. Su nuevo saldo es {saldo}")
@@ -78,78 +69,50 @@ def sendMoney(nombreUsuario, users):
     print("===================")
 
     opcion = input()
+    ret = False
 
-    while opcion != "1" and opcion != "2":
-        print("Por favor, elija una opción válida (1 ó 2): ")
+    while opcion not in ["1","2","3"]:
+        print("Por favor, elija una opción válida: ")
         opcion = input()
 
-    tipoTransaccion = "envioInterno" if opcion == "1" else "envioExterno"
-
-    monto = float(input("Ingrese el monto que desea enviar: "))
-
-    #Validamos que tenga dinero suficiente en su cuenta
-    while not checkBalance(monto, nombreUsuario, users):
-        print("No hay dinero suficiente en su cuenta")
+    if opcion in ["1","2"]:
+        tipoTransaccion = "envioInterno" if opcion == "1" else "envioExterno"
         monto = float(input("Ingrese el monto que desea enviar: "))
+        dinero_en_cuenta = usuarios.getBalance(nombreUsuario)
 
-    cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+        while dinero_en_cuenta < monto and monto != 0:
+            print(f"No hay suficiente dinero en la cuenta, su saldo es de ${dinero_en_cuenta}")
+            monto = float(input("Ingrese otro monto o presione 0 para salir: "))
 
-    #Validamos formato del CBU/CVU
-    while not checkFormat(cuentaDestino):
-        print("Formato incorrecto. Revise el número y vuelva a intentar")
-        cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
-
-    if tipoTransaccion == "envioInterno":
-        #Validamos que la cuenta existe en Bankando
-        #! Este while no haría falta ya que se valida que exista el cvu desde el modelo usuario
-        while not checkCVU(cuentaDestino, users):
-            print("No existe esa cuenta en Bankando. Revise el número de CVU")
+        if monto > 0:
             cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
 
-            #Validamos de nuevo el formato antes de volver a buscar el nuevo input en Bankando
-            while not checkFormat(cuentaDestino):
+            #Validamos formato del CBU/CVU
+            while cuentaDestino != "0" and not checkFormat(cuentaDestino):
                 print("Formato incorrecto. Revise el número y vuelva a intentar")
-                cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+                cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino (0 para volver): ")
 
-        #Se ingresa el dinero en la cuenta destino de Bankando
-        usuarios.increaseBalance(cuentaDestino, monto)
+            if tipoTransaccion == "envioInterno" and cuentaDestino != "0":
+                #Validamos que la cuenta existe en Bankando
+                while cuentaDestino != "0" and not checkCVU(cuentaDestino, users):
+                    print("No existe esa cuenta en Bankando. Revise el número de CVU")
+                    cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino (0 para volver): ")
 
-    #Se resta el dinero en la cuenta origen del usuario
-    saldo = decreaseBalance(monto, nombreUsuario, users)
-    print(f"Su dinero ha sido enviado. Su nuevo saldo es ${saldo}")
+                if cuentaDestino != "0":
+                    #Se ingresa el dinero en la cuenta destino de Bankando
+                    usuarios.increaseBalance(cuentaDestino, monto)
 
-    #Se guarda el registro individual de la transacción en el archivo de transacciones de Bankando
-    registerTransaction(nombreUsuario, tipoTransaccion, monto, cuentaDestino)
+            # Verificamos que el usuario no corte la ejecución
+            if cuentaDestino != "0":
+                #Se resta el dinero en la cuenta origen del usuario
+                ret = usuarios.decreaseBalance(monto,nombreUsuario)
+                saldo = float(dinero_en_cuenta - monto)
+                print(f"Su dinero ha sido enviado. Su nuevo saldo es ${saldo}")
 
-    if opcion in [1,2]:
-        monto = float(input("Ingrese el monto que desea enviar: "))
-
-        while not checkBalance(monto, nombreUsuario, users):
-            print("No hay dinero suficiente en su cuenta")
-            monto = float(input("Ingrese el monto que desea enviar: "))
-
-        cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
-
-        while not checkFormat(cuentaDestino):
-            print("Formato incorrecto. Revise el número y vuelva a intentar")
-            cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
-
-        if tipoTransaccion == "envioInterno":
-            while not checkCVU(cuentaDestino, users):
-                print("No existe esa cuenta en Bankando. Revise el número de CVU")
-                cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
-                while not checkFormat(cuentaDestino):
-                    print("Formato incorrecto. Revise el número y vuelva a intentar")
-                    cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
-
-            usuarios.increaseBalance(cuentaDestino, monto)
-
-        saldo = decreaseBalance(monto, nombreUsuario, users)
-        print(f"Su dinero ha sido enviado. Su nuevo saldo es {saldo}")
-
-        ret = (cuentaDestino, monto, saldo, tipoTransaccion)
-    else:
-        ret = False
+                #Se guarda el registro individual de la transacción en el archivo de transacciones de Bankando
+                registerTransaction(nombreUsuario, tipoTransaccion, monto, cuentaDestino)
+                
+                ret = (cuentaDestino, monto, saldo, tipoTransaccion)
 
     return ret
 
@@ -399,3 +362,8 @@ print(transacciones)
 print()
 print(users)
 """
+
+#! funciones refactorizadas:
+# checkBalance (ahora en modelo users)
+# increaseBalance (ahora en modelo users)
+# decreaseBalance (ahora en modelo users)
