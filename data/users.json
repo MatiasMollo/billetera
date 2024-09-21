@@ -36,7 +36,15 @@
         "apellido": "Mollo",
         "password": "cachengue",
         "historial_crediticio": 0,
-        "dinero": 1029.0,
+        "dinero": 929.0,
         "CVU": "12345678901"
+    },
+    "CvuNuevo": {
+        "nombre": "Mati",
+        "apellido": "Mollo",
+        "password": "cachengue",
+        "historial_crediticio": 0,
+        "dinero": 0,
+        "CVU": "88762575947"
     }
 }

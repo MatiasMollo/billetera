@@ -1,8 +1,9 @@
 import json
 import re
+import random
 
 USER_PATH = 'data/users.json'
-VALID_FIELDS = ['nombre','apellido','historial_crediticio','dinero','password']
+VALID_FIELDS = ['nombre','apellido','historial_crediticio','dinero','password','CVU']
 
 def getUser(username = None):
     """
@@ -62,6 +63,7 @@ def createUser(username,userData):
 
     file = open(USER_PATH,'r')
     data = json.loads(file.read())
+    userData['CVU'] = generateCVU()
 
     struct = validStruct(userData)
     if not struct:
@@ -167,8 +169,28 @@ def getBalance(username):
 
     return saldo
 
+#! Esta función no se está utilizando (pero debería)
 def verificarDNIunico(dni, users):
     for user in users.values():
         if user["dni"] == dni:
             return True
     return False
+
+def generateCVU():
+    """
+        Genera un CVU único entre los usuarios
+    """
+    unique = False
+    users = getUser()
+
+    while not unique:
+        index = 0
+        unique = True
+        cvu = "".join([str(random.randint(0,9)) for _ in range(11)])
+
+        while index < len(users.values()):
+            if list(users.values())[index]['CVU'] == cvu:
+                unique = False
+            index += 1
+
+    return cvu

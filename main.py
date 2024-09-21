@@ -6,10 +6,11 @@ MENU = {
     "2. Enviar dinero": transaction.sendMoney,
     "3. Ver movimientos" : transaction.showReports,
     "4. Pedir tarjeta" : "transaction.pedirTarjeta",
-    "5. Cerrar sesión" : []
+    "5. Pagar servicios" : transaction.payUtilities,
+    "6. Cerrar sesión" : []
 }
 
-SALIR = 5
+SALIR = 6
 
 def printLogin():
     """

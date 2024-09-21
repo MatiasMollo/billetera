@@ -121,26 +121,33 @@ def sendMoney(nombreUsuario, users):
 def payUtilities(nombreUsuario, users):
     factura = input("Ingrese el número de la factura que desea pagar: ")
     monto = float(input("Ingrese el monto que desea enviar: "))
-    #Validamos que tenga dinero suficiente en su cuenta
-    while not checkBalance(monto, nombreUsuario, users):
-        print("No hay dinero suficiente en su cuenta")
-        monto = float(input("Ingrese el monto que desea enviar: "))
-    saldo = decreaseBalance(monto, nombreUsuario, users)
-    print(f"Su factura ha sido pagada. Su nuevo saldo es {saldo}")
+    saldo = 0
     tipoTransaccion = "pagoServicio"
-    #Se guarda el registro individual de la transacción en el archivo de transacciones de Bankando
-    registerTransaction(nombreUsuario, tipoTransaccion, monto, factura)
+    dinero_en_cuenta = usuarios.getBalance(nombreUsuario)
+
+    #Validamos que tenga dinero suficiente en su cuenta
+    while monto > dinero_en_cuenta and monto != 0:
+        print("No hay dinero suficiente en su cuenta")
+        monto = float(input("Ingrese el monto que desea enviar (0 para cancelar): "))
+
+    #Verificamos que el usuario no haya cancelado la operación
+    if monto:
+        status,saldo = usuarios.decreaseBalance(monto,nombreUsuario)
+        print(f"Su factura ha sido pagada. Su nuevo saldo es ${saldo}")
+
+        #Se guarda el registro individual de la transacción en el archivo de transacciones de Bankando
+        registerTransaction(nombreUsuario, tipoTransaccion, monto, factura)
     
     return monto, saldo, tipoTransaccion
 
 
-#Valida si el monto que se pretende usar está disponible en la cuenta
-def checkBalance(monto, nombreUsuario, users):
-    if nombreUsuario in users:
-        saldo = users[nombreUsuario]["dinero"]
-    if saldo >= monto:
-        return True
-    return False
+# #Valida si el monto que se pretende usar está disponible en la cuenta
+# def checkBalance(monto, nombreUsuario, users):
+#     if nombreUsuario in users:
+#         saldo = users[nombreUsuario]["dinero"]
+#     if saldo >= monto:
+#         return True
+#     return False
 
 
 #Le sirve al usuario para consultar el saldo de su cuenta
@@ -165,14 +172,14 @@ def showCVU(nombreUsuario, users):
     print(f"CVU: {cuenta}")
 
 
-#Resta el monto de la transacción del saldo del usuario
-def decreaseBalance(monto, nombreUsuario, users):
-    if nombreUsuario in users:
-        saldo = users[nombreUsuario]["dinero"]
-        saldo = saldo - monto
-        users[nombreUsuario]["dinero"] = saldo
+# #Resta el monto de la transacción del saldo del usuario
+# def decreaseBalance(monto, nombreUsuario, users):
+#     if nombreUsuario in users:
+#         saldo = users[nombreUsuario]["dinero"]
+#         saldo = saldo - monto
+#         users[nombreUsuario]["dinero"] = saldo
     
-    return saldo
+#     return saldo
 
 
 #Luego de cada operación, el movimiento se registra acá para el control del banco en el archivo transacciones
@@ -200,21 +207,25 @@ def registerTransaction(nombreUsuario, tipoTransaccion, monto, datoTransaccion):
 
 
 #Le muestra al usuario los reportes de sus movimientos por fechas seleccionadas, los más recientes (cantidad a elegir dentro del total) y por tipo de transacción realizada (cantidad a elegir dentro del total)
-def showReports(nombreUsuario, transacciones):
+def showReports(nombreUsuario, users):
     print("===================")
     print("1. Mostrar movimientos por fecha")
     print("2. Mostrar movimientos más recientes")
     print("3. Mostrar movimientos por tipo de transacción")
+    print("4. Volver")
     print("===================")
     opcion = input()
-    while opcion != "1" and opcion != "2" and opcion != "3":
-        print("Por favor, ingrese una opción correcta (1, 2 ó 3): ")
+
+    transacciones = getTransaction()
+    
+    while opcion not in ["1","2","3","4"]:
+        print("Por favor, ingrese una opción correcta: ")
         opcion = input()
     if opcion == "1":
         showTransactionsByDate(nombreUsuario, transacciones)
     elif opcion == "2":
         showMostRecentTransactions(nombreUsuario, transacciones)
-    else:
+    elif opcion == "3":
         tipoTransaccion = chooseReportByTransaction()
         showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones)
 
@@ -284,7 +295,7 @@ def showTransactionsByDate(nombreUsuario, transacciones):
         fechaFinal = checkDate(fechaUsuarioFinal)
     
     
-    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario and valor["fecha"] >= fechaInicial and valor["fecha"] <= fechaFinal]
+    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario and tuple(valor["fecha"]) >= fechaInicial and tuple(valor["fecha"]) <= fechaFinal]
     corteOrdenado = sorted(corte)
     if len(corte) != 0:
         print(corteOrdenado)
@@ -299,6 +310,7 @@ def showMostRecentTransactions(nombreUsuario, transacciones):
         print("Opción inválida. Por favor, asegúrese de ingresar un número entero")
         print()
         cantidad = input("Indique la cantidad de movimientos recientes que desea consultar: ")
+
     cantidad = int(cantidad)
 
     totalUsuario = checkTotalUserTransactions(nombreUsuario, transacciones)
