@@ -194,3 +194,23 @@ def generateCVU():
             index += 1
 
     return cvu
+
+def getCVU(username):
+    """
+        Retorna el CVU del usuario
+    """
+    users = getUser()
+    return users[username]["CVU"]
+
+
+def consultCVU(username,users):
+    """
+        Función con mensaje personalizado para ser llamada desde el menú
+    """
+    print(f"Su CVU es: {getCVU(username)}")
+
+def consultBalance(username,users):
+    """
+        Función con mensaje personalizado para ser llamada desde el menú
+    """
+    print(f"Su saldo es de ${getBalance(username)}")
