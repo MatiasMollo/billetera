@@ -1,0 +1,32 @@
+{
+    "test": {
+        "card_number": "3933873537944249",
+        "valid_from": [
+            2024,
+            9,
+            17
+        ],
+        "expires_end": [
+            2029,
+            9,
+            17
+        ],
+        "security_code": "6272",
+        "full_name": "Test User"
+    },
+    "Matiass07_34": {
+        "card_number": "8052141522257123",
+        "valid_from": [
+            2024,
+            9,
+            17
+        ],
+        "expires_end": [
+            2029,
+            9,
+            17
+        ],
+        "security_code": "6731",
+        "full_name": "Matias Soria"
+    }
+}
