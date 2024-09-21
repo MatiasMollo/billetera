@@ -116,8 +116,6 @@ def sendMoney(nombreUsuario, users):
 
     return ret
 
-
-
 def payUtilities(nombreUsuario, users):
     factura = input("Ingrese el número de la factura que desea pagar: ")
     monto = float(input("Ingrese el monto que desea enviar: "))
@@ -140,16 +138,6 @@ def payUtilities(nombreUsuario, users):
     
     return monto, saldo, tipoTransaccion
 
-
-# #Valida si el monto que se pretende usar está disponible en la cuenta
-# def checkBalance(monto, nombreUsuario, users):
-#     if nombreUsuario in users:
-#         saldo = users[nombreUsuario]["dinero"]
-#     if saldo >= monto:
-#         return True
-#     return False
-
-
 #Le sirve al usuario para consultar el saldo de su cuenta
 def showBalance(nombreUsuario, users):
     dataUsuario = users.get(nombreUsuario)
@@ -170,17 +158,6 @@ def showCVU(nombreUsuario, users):
     dataUsuario = users.get(nombreUsuario)
     cuenta = dataUsuario.get("CVU")
     print(f"CVU: {cuenta}")
-
-
-# #Resta el monto de la transacción del saldo del usuario
-# def decreaseBalance(monto, nombreUsuario, users):
-#     if nombreUsuario in users:
-#         saldo = users[nombreUsuario]["dinero"]
-#         saldo = saldo - monto
-#         users[nombreUsuario]["dinero"] = saldo
-    
-#     return saldo
-
 
 #Luego de cada operación, el movimiento se registra acá para el control del banco en el archivo transacciones
 def registerTransaction(nombreUsuario, tipoTransaccion, monto, datoTransaccion):
@@ -255,11 +232,9 @@ def chooseReportByTransaction():
     
     return tipoTransaccion
 
-
 #Valida si los valores ingresados en el string del usuario son números enteros
 def checkInteger(string):
     return string.isdigit()
-
 
 #Valida si la fecha ingresada por el usuario cumple con el formato requerido
 def checkDate(fechaString):
@@ -354,28 +329,7 @@ def checkTotalUserTransactions(nombreUsuario, transacciones):
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
     return len(corte)
 
-"""
-#Programa principal
-nombreUsuario = "Dani333_"
-# tipoTransaccion = "envio"
-# monto = 1456
-# fecha = registerDate()
-# cuentaDestino, monto, saldo, tipoTransaccion = sendMoney(nombreUsuario, users)
-# monto, saldo, tipoTransaccion = depositMoney(nombreUsuario, users)
-# monto, saldo, tipoTransaccion = payUtilities(nombreUsuario, users)
-# print(users)
-# # print(cuentaDestino, monto, saldo, tipoTransaccion)
-# # numeroTransaccion = registrarTransaccion(nombreUsuario, tipoTransaccion, monto, fecha, totalTransacciones)
-# # totalTransacciones += 1
-# print(transacciones)
-showReports(nombreUsuario, transacciones)
-print()
-print(transacciones)
-print()
-print(users)
-"""
 
-#! funciones refactorizadas:
-# checkBalance (ahora en modelo users)
-# increaseBalance (ahora en modelo users)
-# decreaseBalance (ahora en modelo users)
+#TODO 
+# Mostrar el CVU y el balance en el menú de entrada
+# Integrar tarjetas de debito y credito
