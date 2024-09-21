@@ -1,19 +1,19 @@
 import json
 import re
+import random
 
 USER_PATH = 'data/users.json'
-VALID_FIELDS = ['nombre','apellido','historial_crediticio','dinero','password']
+VALID_FIELDS = ['nombre','apellido','historial_crediticio','dinero','password','CVU']
 
 def getUser(username = None):
     """
     Obtiene el usuario que recibe como parámetro, en caso de que este sea None, devuelve todos los usuarios del archivo JSON
 
     Parámetros:
-    
-    username (None | String): Nombre de usuario
+        username (None | String): Nombre de usuario
     """
-    with open(USER_PATH,'r') as file:
-        data = json.load(file)
+    file = open(USER_PATH,'r')
+    data = json.loads(file.read())
         
     if username != None and username in data: 
         user = data[username]
@@ -33,9 +33,9 @@ def validUsername(username):
         userName (String): Nombre de usuario
         
     """
-    with open(USER_PATH,'r') as file:
-        users = json.load(file)
-        file.close()
+    file = open(USER_PATH,'r')
+    users = json.loads(file.read())
+    file.close()
 
     pattern = r'^[A-Za-z0-9_-]+$'
     return re.match(pattern,username) and username not in users
@@ -61,8 +61,9 @@ def createUser(username,userData):
     ret = False
     message = "El nombre de usuario ya existe o es inválido."
 
-    with open(USER_PATH,'r') as file:
-        data = json.load(file)
+    file = open(USER_PATH,'r')
+    data = json.loads(file.read())
+    userData['CVU'] = generateCVU()
 
     struct = validStruct(userData)
     if not struct:
@@ -71,11 +72,11 @@ def createUser(username,userData):
     if validUsername(username) and struct:
         data[username] = userData
         message = "Se creó el usuario correctamente"
-        with open(USER_PATH,'w') as file:
-            json.dump(data,file)
-            ret = True
+        file = open(USER_PATH,'w')
+        json.dump(data,file)
+        file.close()
+        ret = True
 
-    file.close()
     return ret,message
 
 def login(username,password):
@@ -88,9 +89,9 @@ def login(username,password):
     """
     ret = False
     
-    with open(USER_PATH,'r') as file:
-        data = json.load(file)
-        file.close()
+    file = open(USER_PATH,'r')
+    data = json.loads(file.read())
+    file.close()
 
     if username in data:
         if 'password' in data[username] and data[username]['password'] == password:
@@ -98,18 +99,98 @@ def login(username,password):
 
     return ret
 
+def increaseBalance(CVU,money,username = None):
+    """
+        Incrementa el saldo del usuario
+    """
+    users = getUser()
+    keys = list(users.keys())
+    values = list(users.values())
 
+
+    index = 0
+    user_found = False
+    saldo = 0
+
+    if username and username in users:
+        # Método rápido, sin necesidad de recorrer todos los usuarios
+        users[username].update({"dinero" : users[username]['dinero'] + money})
+        saldo = users[username]['dinero']
+        user_found = True
+    else:
+        #Método largo (cuando no tenemos nombre de usuario).s
+        while index < len(users) and not user_found:
+
+            if values[index]["CVU"] == CVU:
+                user_found = True
+
+                #Actualización de dinero en cuenta
+                users[keys[index]].update({"dinero" : users[keys[index]]["dinero"] + money})
+
+                #Variable que retorna informando el nuevo saldo
+                saldo = users[keys[index]]["dinero"]
+
+            index += 1
+
+    if user_found:
+        file = open(USER_PATH,'w')
+        json.dump(users,file)
+        file.close()
+    
+    return user_found,saldo
+
+def decreaseBalance(money,username):
+    """
+        Disminuye el saldo del usuario
+    """
+    users = getUser()
+    user_found = False
+    saldo = 0
+
+    if username in users:
+        user_found = True
+        saldo = float(users[username]['dinero'] - money)
+        users[username].update({"dinero": saldo})
+
+        file = open(USER_PATH,'w')
+        json.dump(users,file)
+        file.close()
+    
+    return user_found, saldo
+
+
+def getBalance(username):
+    saldo = 0
+
+    users = getUser()
+
+    if username in users:
+        saldo = users[username]["dinero"]
+
+    return saldo
+
+#! Esta función no se está utilizando (pero debería)
 def verificarDNIunico(dni, users):
     for user in users.values():
         if user["dni"] == dni:
             return True
     return False
 
+def generateCVU():
+    """
+        Genera un CVU único entre los usuarios
+    """
+    unique = False
+    users = getUser()
 
-# print(createUser('Matiass07_34',{
-#     "nombre" : "Matias",
-#     "apellido" : "Mollo",
-#     "password" : "12345",
-#     "historial_crediticio" : 10,
-#     "dinero" : 100,
-# }))
+    while not unique:
+        index = 0
+        unique = True
+        cvu = "".join([str(random.randint(0,9)) for _ in range(11)])
+
+        while index < len(users.values()):
+            if list(users.values())[index]['CVU'] == cvu:
+                unique = False
+            index += 1
+
+    return cvu
