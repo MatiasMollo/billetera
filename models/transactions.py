@@ -1,92 +1,11 @@
 
-import datetime
+from datetime import datetime
 import json
 import models.users as usuarios
-# from datetime import datetime
 
 TRANSACTION_PATH = "data/transactions.json"
 
 totalTransacciones = 231
-
-users = {
-    'Matiass07_34': {
-        "nombre" : "Matias",
-        "apellido" : "Mollo",
-        "DNI": "12345561",
-        "password" : "12345",
-        "CVU": "46557867773",
-        "historial_crediticio" : 10,
-        "dinero" : 500,
-    },
-    'Dani333_': {
-        "nombre" : "Daniel",
-        "apellido" : "González",
-        "DNI": "17464644",
-        "password" : "12345",
-        "CVU": "44561291222",
-        "historial_crediticio" : 10,
-        "dinero" : 100,
-    }
-}
-
-# transacciones = {
-#     1: {
-#         "nombre_usuario": "Dani333_",
-#         "tipo_transaccion": "ingreso",
-#         "fecha": (2024, 8, 20, 9, 30, 11),
-#         "monto": 10853.00,
-#         "cuenta_origen": "12349855886",
-#     },
-#     2: {
-#         "nombre_usuario": "Dani333_",
-#         "tipo_transaccion": "envioExterno",
-#         "fecha": (2024, 8, 24, 10, 19, 24),
-#         "monto": 4000.00,
-#         "CVU_destino": "13441919001",
-#     },
-#     3: {
-#         "nombre_usuario": "Dani333_",
-#         "tipo_transaccion": "ingreso",
-#         "fecha": (2024, 8, 30, 12, 10, 3),
-#         "monto": 10853.00,
-#         "cuenta_origen": "18866710229",
-#     },
-#     4: {
-#         "nombre_usuario": "Carlos12",
-#         "tipo_transaccion": "pagoServicio",
-#         "fecha": (2024, 9, 7, 16, 12, 41),
-#         "monto": 4000.00,
-#         "numero_factura": "455666",
-#     },
-#     5: {
-#         "nombre_usuario": "Dani333_",
-#         "tipo_transaccion": "ingreso",
-#         "fecha": (2024, 9, 10, 20, 32, 55),
-#         "monto": 10853.00,
-#         "cuenta_origen": "44231710229",
-#     },
-#     6: {
-#         "nombre_usuario": "Jose_29",
-#         "tipo_transaccion": "envioInterno",
-#         "fecha": (2024, 9, 11, 21, 8, 17),
-#         "monto": 4000.00,
-#         "CVU_destino": "27298331344",
-#     },
-#     7: {
-#         "nombre_usuario": "Dani333_",
-#         "tipo_transaccion": "ingreso",
-#         "fecha": (2024, 9, 14, 23, 11, 5),
-#         "monto": 10853.00,
-#         "cuenta_origen": "73829076321",
-#     },
-#     8: {
-#         "nombre_usuario": "Dani333_",
-#         "tipo_transaccion": "envioInterno",
-#         "fecha": (2024, 9, 15, 10, 45, 30),
-#         "monto": 4000.00,
-#         "CVU_destino": "15364840299",
-#     }
-# }
 
 def getTransaction(id = None):
     """
@@ -110,7 +29,7 @@ def getTransaction(id = None):
 
 #Registra la fecha y tiempo al momento de la transacción
 def registerDate():
-    hoy = datetime.datetime.now()
+    hoy = datetime.now()
     fechaActual = (hoy.year, hoy.month, hoy.day, hoy.hour, hoy.minute, hoy.second)
 
     return fechaActual
@@ -118,14 +37,13 @@ def registerDate():
 
 #Revisa que el CVU cuente con el formato requerido
 def checkFormat(cuentaDestino):
-    if len(cuentaDestino) == 11:
-        return True
-    return False
+    return len(cuentaDestino) == 11
 
 
 #Deposita dinero a la cuenta del usuario que viene de una cuenta externa
 def depositMoney(nombreUsuario, users):
     monto = float(input("Ingrese el monto que desea depositar en su cuenta: "))
+    #! Cuenta origen no debería necesitarse ya que el usuario está logueado
     cuentaOrigen = input("Ingrese el CBU o CVU de la cuenta origen de los fondos: ")
 
     while not checkFormat(cuentaOrigen):
@@ -136,8 +54,13 @@ def depositMoney(nombreUsuario, users):
     cuentaDestino = dataUsuario.get("CVU")
 
     #Se ingresa el dinero en la cuenta destino de Bankando
-    saldo = increaseBalance(cuentaDestino, monto, users)
-    print(f"\nSu dinero ha sido depositado. Su nuevo saldo es {saldo}")
+    #! saldo = increaseBalance(cuentaDestino, monto, users)
+    ret,saldo = usuarios.increaseBalance(cuentaDestino,monto,nombreUsuario)
+    if ret:
+        print(f"\nSu dinero ha sido depositado. Su nuevo saldo es {saldo}")
+    else:
+        print("No se pudo encontrar la cuenta, intente nuevamente.")
+
     tipoTransaccion = "ingreso"
 
     #Se guarda el registro individual de la transacción en el archivo de transacciones de Bankando
@@ -153,50 +76,64 @@ def sendMoney(nombreUsuario, users):
     print("2. Enviar a una cuenta de otro banco")
     print("3. Volver")
     print("===================")
+
     opcion = input()
+
     while opcion != "1" and opcion != "2":
         print("Por favor, elija una opción válida (1 ó 2): ")
         opcion = input()
-    if opcion == "1":
-        tipoTransaccion = "envioInterno"
-    else:
-        tipoTransaccion = "envioExterno"
+
+    tipoTransaccion = "envioInterno" if opcion == "1" else "envioExterno"
+
     monto = float(input("Ingrese el monto que desea enviar: "))
+
     #Validamos que tenga dinero suficiente en su cuenta
     while not checkBalance(monto, nombreUsuario, users):
         print("No hay dinero suficiente en su cuenta")
         monto = float(input("Ingrese el monto que desea enviar: "))
+
     cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+
     #Validamos formato del CBU/CVU
     while not checkFormat(cuentaDestino):
         print("Formato incorrecto. Revise el número y vuelva a intentar")
         cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+
     if tipoTransaccion == "envioInterno":
         #Validamos que la cuenta existe en Bankando
+        #! Este while no haría falta ya que se valida que exista el cvu desde el modelo usuario
         while not checkCVU(cuentaDestino, users):
             print("No existe esa cuenta en Bankando. Revise el número de CVU")
             cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+
             #Validamos de nuevo el formato antes de volver a buscar el nuevo input en Bankando
             while not checkFormat(cuentaDestino):
                 print("Formato incorrecto. Revise el número y vuelva a intentar")
                 cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+
         #Se ingresa el dinero en la cuenta destino de Bankando
-        increaseBalance(cuentaDestino, monto, users)
+        usuarios.increaseBalance(cuentaDestino, monto)
+
     #Se resta el dinero en la cuenta origen del usuario
     saldo = decreaseBalance(monto, nombreUsuario, users)
-    print(f"Su dinero ha sido enviado. Su nuevo saldo es {saldo}")
+    print(f"Su dinero ha sido enviado. Su nuevo saldo es ${saldo}")
+
     #Se guarda el registro individual de la transacción en el archivo de transacciones de Bankando
     registerTransaction(nombreUsuario, tipoTransaccion, monto, cuentaDestino)
 
     if opcion in [1,2]:
         monto = float(input("Ingrese el monto que desea enviar: "))
+
         while not checkBalance(monto, nombreUsuario, users):
             print("No hay dinero suficiente en su cuenta")
             monto = float(input("Ingrese el monto que desea enviar: "))
+
         cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+
         while not checkFormat(cuentaDestino):
             print("Formato incorrecto. Revise el número y vuelva a intentar")
             cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
+
         if tipoTransaccion == "envioInterno":
             while not checkCVU(cuentaDestino, users):
                 print("No existe esa cuenta en Bankando. Revise el número de CVU")
@@ -204,7 +141,9 @@ def sendMoney(nombreUsuario, users):
                 while not checkFormat(cuentaDestino):
                     print("Formato incorrecto. Revise el número y vuelva a intentar")
                     cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
-            increaseBalance(cuentaDestino, monto, users)
+
+            usuarios.increaseBalance(cuentaDestino, monto)
+
         saldo = decreaseBalance(monto, nombreUsuario, users)
         print(f"Su dinero ha sido enviado. Su nuevo saldo es {saldo}")
 
@@ -270,19 +209,6 @@ def decreaseBalance(monto, nombreUsuario, users):
         saldo = saldo - monto
         users[nombreUsuario]["dinero"] = saldo
     
-    return saldo
-
-
-#Suma el monto de la transacción al saldo del usuario
-def increaseBalance(CVU, monto, users):
-    for clave, valor in users.items():
-        if valor["CVU"] == CVU:
-            saldo = valor["dinero"]
-            saldo = saldo + monto
-            valor["dinero"] = saldo
-
-    # ! Hacer llamado al modelo usuarios y crear función que agregue el saldo desde el mismo
-
     return saldo
 
 

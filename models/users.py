@@ -97,6 +97,44 @@ def login(username,password):
 
     return ret
 
+def increaseBalance(CVU,money,username = None):
+    """
+        Incrementa el saldo del usuario
+    """
+    users = getUser()
+    keys = list(users.keys())
+    values = list(users.values())
+
+
+    index = 0
+    user_found = False
+    saldo = 0
+
+    if username and username in users:
+        # Método rápido, sin necesidad de recorrer todos los usuarios
+        users[username].update("dinero",users[username] + money)
+        user_found = True
+    else:
+        #Método largo (cuando no tenemos nombre de usuario).s
+        while index < len(users) and not user_found:
+
+            if values[index]["CVU"] == CVU:
+                user_found = True
+
+                #Actualización de dinero en cuenta
+                users[keys[index]].update({"dinero": users[keys[index]]["dinero"] + money})
+
+                #Variable que retorna informando el nuevo saldo
+                saldo = users[keys[index]]["dinero"]
+
+            index += 1
+
+    if user_found:
+        file = open(USER_PATH,'w')
+        json.dump(users,file)
+        file.close()
+    
+    return user_found,saldo
 
 def verificarDNIunico(dni, users):
     for user in users.values():

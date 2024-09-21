@@ -5,7 +5,7 @@
         "password": "pedropedropedropedrope",
         "historial_crediticio": 0,
         "dinero": 0,
-        "CVU": "12345678901"
+        "CVU": "12345678905"
     },
     "sad": {
         "nombre": "dsa",
@@ -13,7 +13,7 @@
         "password": "",
         "historial_crediticio": 0,
         "dinero": 0,
-        "CVU": "12345678901"
+        "CVU": "12345678904"
     },
     "Matii": {
         "nombre": "Matias",
@@ -21,22 +21,22 @@
         "password": "asd",
         "historial_crediticio": 0,
         "dinero": 0,
-        "CVU": "12345678901"
+        "CVU": "12345678903"
     },
     "Mati2003": {
         "nombre": "Matias",
         "apellido": "Mollo",
         "password": "cachengue",
         "historial_crediticio": 0,
-        "dinero": 0,
-        "CVU": "12345678901"
+        "dinero": 220,
+        "CVU": "12345678902"
     },
     "mmollo": {
         "nombre": "Matias",
         "apellido": "Mollo",
         "password": "cachengue",
         "historial_crediticio": 0,
-        "dinero": 0,
+        "dinero": 1450,
         "CVU": "12345678901"
     }
 }
