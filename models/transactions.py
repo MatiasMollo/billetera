@@ -264,9 +264,9 @@ def showTransactionsByDate(nombreUsuario, transacciones):
         
     fechaUsuarioFinal = input("Indique hasta qué fecha desea consultar: ")
     fechaFinal = checkDate(fechaUsuarioFinal)
-    while fechaFinal == None:
+    while fechaFinal == None or tuple(fechaInicial) > tuple(fechaFinal):
         print()
-        fechaUsuarioFinal = input("Indique hasta qué fecha desea consultar: ")
+        fechaUsuarioFinal = input("La fecha final debe ser mayor a la fecha inicial y tener un formato válido: ")
         fechaFinal = checkDate(fechaUsuarioFinal)
     
     
@@ -328,8 +328,3 @@ def showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones):
 def checkTotalUserTransactions(nombreUsuario, transacciones):
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
     return len(corte)
-
-
-#TODO 
-# Mostrar el CVU y el balance en el menú de entrada
-# Integrar tarjetas de debito y credito
