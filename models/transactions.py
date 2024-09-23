@@ -43,19 +43,23 @@ def checkFormat(cuentaDestino):
 #Deposita dinero a la cuenta del usuario que viene de una cuenta externa
 def depositMoney(nombreUsuario, users):
     monto = float(input("Ingrese el monto que desea depositar en su cuenta: "))
+    while monto < 0:
+        monto = float(input("El monto no puede ser negativo (presione 0 para cancelar): "))
+
     cuentaOrigen = cuentaDestino = users[nombreUsuario]["CVU"]
-
-    #Se ingresa el dinero en la cuenta destino de Bankando
-    ret,saldo = usuarios.increaseBalance(cuentaDestino,monto,nombreUsuario)
-    if ret:
-        print(f"\nSu dinero ha sido depositado desde su cuenta vinculada. Su nuevo saldo es {saldo}")
-    else:
-        print("No se pudo encontrar la cuenta, intente nuevamente.")
-
     tipoTransaccion = "ingreso"
+    saldo = 0
 
-    #Se guarda el registro individual de la transacción en el archivo de transacciones de Bankando
-    registerTransaction(nombreUsuario, tipoTransaccion, monto, cuentaOrigen)
+    if monto > 0:
+        #Se ingresa el dinero en la cuenta destino de Bankando
+        ret,saldo = usuarios.increaseBalance(cuentaDestino,monto,nombreUsuario)
+        if ret:
+            print(f"\nSu dinero ha sido depositado desde su cuenta vinculada. Su nuevo saldo es {saldo}")
+        else:
+            print("No se pudo encontrar la cuenta, intente nuevamente.")
+
+        #Se guarda el registro individual de la transacción en el archivo de transacciones de Bankando
+        registerTransaction(nombreUsuario, tipoTransaccion, monto, cuentaOrigen)
 
     return monto, saldo, tipoTransaccion
     
@@ -113,6 +117,8 @@ def sendMoney(nombreUsuario, users):
                 registerTransaction(nombreUsuario, tipoTransaccion, monto, cuentaDestino)
                 
                 ret = (cuentaDestino, monto, saldo, tipoTransaccion)
+        else:
+            print("Se canceló la operación")
 
     return ret
 
