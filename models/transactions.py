@@ -48,7 +48,7 @@ def depositMoney(nombreUsuario, users):
     #Se ingresa el dinero en la cuenta destino de Bankando
     ret,saldo = usuarios.increaseBalance(cuentaDestino,monto,nombreUsuario)
     if ret:
-        print(f"\nSu dinero ha sido depositado. Su nuevo saldo es {saldo}")
+        print(f"\nSu dinero ha sido depositado desde su cuenta vinculada. Su nuevo saldo es {saldo}")
     else:
         print("No se pudo encontrar la cuenta, intente nuevamente.")
 
@@ -331,7 +331,7 @@ def checkTotalUserTransactions(nombreUsuario, transacciones):
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
     return len(corte)
     
-    
+
 #Itera sobre los reportes de transacciones seleccionados para mostrarlos en pantalla con un formato legible para el usuario
 def printReports(report):
     campos = ["Nombre de usuario", "Tipo de transacción", "Fecha", "Monto", "Cuenta origen", "Cuenta destino", "Número de factura"]
