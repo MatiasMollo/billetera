@@ -74,13 +74,18 @@ def getOneDebitCard(username):
         return False
     
 
-#! Falta hacer que los datos se impriman de una forma mas legible
 def consultCard(username,users):
     """
         Imprime los datos de la tarjeta
     """
     card = getOneDebitCard(username)
     if card:
-        print(f"Su Tarjeta es: {card}")
+        print()
+        for key,value in card.items():
+            if isinstance(value,list):
+                value = "/".join([str(elemento) for elemento in value[3::-1]])
+            print(f"{key}: {value}")
+        print()
+
     else:
         print("No se encontró una tarjeta para este usuario")
