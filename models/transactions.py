@@ -48,7 +48,7 @@ def depositMoney(nombreUsuario, users):
     #Se ingresa el dinero en la cuenta destino de Bankando
     ret,saldo = usuarios.increaseBalance(cuentaDestino,monto,nombreUsuario)
     if ret:
-        print(f"\nSu dinero ha sido depositado. Su nuevo saldo es {saldo}")
+        print(f"\nSu dinero ha sido depositado desde su cuenta vinculada. Su nuevo saldo es {saldo}")
     else:
         print("No se pudo encontrar la cuenta, intente nuevamente.")
 
@@ -270,10 +270,10 @@ def showTransactionsByDate(nombreUsuario, transacciones):
         fechaFinal = checkDate(fechaUsuarioFinal)
     
     
-    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario and tuple(valor["fecha"]) >= fechaInicial and tuple(valor["fecha"]) <= fechaFinal]
+    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario and tuple(valor["fecha"][:3]) >= fechaInicial and tuple(valor["fecha"][:3]) <= fechaFinal]
     corteOrdenado = sorted(corte)
-    if len(corte) != 0:
-        print(corteOrdenado)
+    if len(corteOrdenado) != 0:
+        printReports(corteOrdenado)
     else:
         print("No se encontraron movimientos en esas fechas")
 
@@ -295,12 +295,14 @@ def showMostRecentTransactions(nombreUsuario, transacciones):
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
     corteOrdenado = sorted(corte)
     if cantidad >= len(corteOrdenado):
-        print(corteOrdenado)
-    elif len(corte) == 0:
+        printReports(corteOrdenado)
+    elif len(corteOrdenado) == 0:
         print("Usted no tiene movimientos registrados")    
     else:
         #Le resta al total de transacciones (ej: 8) la cantidad indicada (ej: 3) para mostrar sólo las últimas posiciones (ej: 5-7)
-        print(corteOrdenado[len(corteOrdenado) - cantidad:])
+        rebanado = corteOrdenado[len(corteOrdenado) - cantidad:]
+        printReports(rebanado)
+  
 
 
 #Reporte para el usuario de sus movimientos por tipo de transacción
@@ -319,12 +321,43 @@ def showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones):
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario and valor["tipo_transaccion"] == tipoTransaccion]
     corteOrdenado = sorted(corte)
     if cantidad >= len(corteOrdenado):
-        print(corteOrdenado)
+        printReports(corteOrdenado)
     else:
-        print(corteOrdenado[len(corteOrdenado) - cantidad:])
+        printReports(corteOrdenado[len(corteOrdenado) - cantidad:])
 
 
 #Valida el total de transacciones realizadas para saber si podrá mostrar la cantidad solicitada por el usuario o el total existente
 def checkTotalUserTransactions(nombreUsuario, transacciones):
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
     return len(corte)
+    
+
+#Itera sobre los reportes de transacciones seleccionados para mostrarlos en pantalla con un formato legible para el usuario
+def printReports(report):
+    campos = ["Nombre de usuario", "Tipo de transacción", "Fecha", "Monto", "Cuenta origen", "Cuenta destino", "Número de factura"]
+    listaFinal= [transaction for id_number, transaction in report]
+    for transaction in listaFinal:
+        #El contador sirve para reemplazar la clave por el string adecuado de la lista campos
+        contador = 0
+        while contador < len(transaction):
+            for key, value in transaction.items():
+                #Para valores que son iguales en todos los registros
+                if contador <= 3:
+                    if key == "fecha":
+                        print(f"{campos[contador]}:", "/".join([str(elemento) for elemento in value[:3]])) #Convierte el formato fecha a string con / como separador
+                        contador += 1
+                    else:
+                        print(f"{campos[contador]}:", value)
+                        contador += 1
+                #Para valores que cambian en el registro según la transacción
+                else:
+                    if key == "cuenta_origen":
+                        print(f"{campos[contador]}:", value)
+                        contador += 1
+                    elif key == "CVU_destino":
+                        print(f"{campos[contador+1]}:", value)
+                        contador += 1
+                    else:
+                        print(f"{campos[contador+2]}:", value)
+                        contador += 1
+        print()
