@@ -61,8 +61,7 @@ def createUser(username,userData):
     ret = False
     message = "El nombre de usuario ya existe o es inválido."
 
-    file = open(USER_PATH,'r')
-    data = json.loads(file.read())
+    data = getUser()
     userData['CVU'] = generateCVU()
 
     struct = validStruct(userData)

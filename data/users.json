@@ -1,1 +1,58 @@
-{"Pepe11": {"nombre": "Pepe", "apellido": "11", "password": "pedropedropedropedrope", "historial_crediticio": 0, "dinero": 0, "CVU": "12345678905"}, "sad": {"nombre": "dsa", "apellido": "", "password": "", "historial_crediticio": 0, "dinero": 0, "CVU": "12345678904"}, "Matii": {"nombre": "Matias", "apellido": "Mollo", "password": "asd", "historial_crediticio": 0, "dinero": 0, "CVU": "12345678903"}, "Mati2003": {"nombre": "Matias", "apellido": "Mollo", "password": "cachengue", "historial_crediticio": 0, "dinero": 1620.0, "CVU": "12345678902"}, "mmollo": {"nombre": "Matias", "apellido": "Mollo", "password": "cachengue", "historial_crediticio": 0, "dinero": 730.0, "CVU": "12345678901"}, "CvuNuevo": {"nombre": "Mati", "apellido": "Mollo", "password": "cachengue", "historial_crediticio": 0, "dinero": 100.0, "CVU": "88762575947"}}
+{
+    "Pepe11": {
+        "nombre": "Pepe",
+        "apellido": "11",
+        "password": "pedropedropedropedrope",
+        "historial_crediticio": 0,
+        "dinero": 0,
+        "CVU": "12345678905"
+    },
+    "sad": {
+        "nombre": "dsa",
+        "apellido": "",
+        "password": "",
+        "historial_crediticio": 0,
+        "dinero": 0,
+        "CVU": "12345678904"
+    },
+    "Matii": {
+        "nombre": "Matias",
+        "apellido": "Mollo",
+        "password": "asd",
+        "historial_crediticio": 0,
+        "dinero": 0,
+        "CVU": "12345678903"
+    },
+    "Mati2003": {
+        "nombre": "Matias",
+        "apellido": "Mollo",
+        "password": "cachengue",
+        "historial_crediticio": 0,
+        "dinero": 1620.0,
+        "CVU": "12345678902"
+    },
+    "mmollo": {
+        "nombre": "Matias",
+        "apellido": "Mollo",
+        "password": "cachengue",
+        "historial_crediticio": 0,
+        "dinero": 730.0,
+        "CVU": "12345678901"
+    },
+    "CvuNuevo": {
+        "nombre": "Mati",
+        "apellido": "Mollo",
+        "password": "cachengue",
+        "historial_crediticio": 0,
+        "dinero": 100.0,
+        "CVU": "88762575947"
+    },
+    "mmollo2": {
+        "nombre": "Matiii",
+        "apellido": "Mollo",
+        "password": "z10",
+        "historial_crediticio": 0,
+        "dinero": 0,
+        "CVU": "58095212437"
+    }
+}
