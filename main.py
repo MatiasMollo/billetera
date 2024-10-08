@@ -84,11 +84,11 @@ while option != salir:
             password = input("Ingrese su contraseña: ")
 
             (create, message) = user.createUser(username,{
-                "nombre" : name,
-                "apellido" : lastname,
-                "password" : password,
-                "historial_crediticio" : 0,
-                "dinero" : 0
+                "Nombre" : name,
+                "Apellido" : lastname,
+                "Password" : password,
+                "Historial crediticio" : 0,
+                "Saldo" : 0
             })
 
             #mensaje de estado

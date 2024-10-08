@@ -88,5 +88,35 @@
         ],
         "security_code": "0051",
         "full_name": "Mollo Matiii"
+    },
+    "Tester23": {
+        "N\u00famero de tarjeta": "1383394463076585",
+        "V\u00e1lida desde": [
+            2024,
+            10,
+            8
+        ],
+        "V\u00e1lida hasta": [
+            2029,
+            10,
+            8
+        ],
+        "C\u00f3digo de seguridad": "8390",
+        "Nombre completo": "Temporal Pasante"
+    },
+    "Tester4": {
+        "N\u00famero de tarjeta": "8612096427173101",
+        "V\u00e1lida desde": [
+            2024,
+            10,
+            8
+        ],
+        "V\u00e1lida hasta": [
+            2029,
+            10,
+            8
+        ],
+        "C\u00f3digo de seguridad": "5796",
+        "Nombre completo": "Er Test"
     }
 }

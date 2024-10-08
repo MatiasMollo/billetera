@@ -5,7 +5,6 @@ import models.users as usuarios
 
 TRANSACTION_PATH = "data/transactions.json"
 
-totalTransacciones = 231
 
 def getTransaction(id = None):
     """
@@ -14,7 +13,7 @@ def getTransaction(id = None):
         Parámetros:
             id (None|Integer): Id de la operación
     """
-    file = open(TRANSACTION_PATH,'r')
+    file = open(TRANSACTION_PATH,'r', encoding='utf-8')
     data = json.loads(file.read())
 
     if id:
@@ -47,7 +46,7 @@ def depositMoney(nombreUsuario, users):
         monto = float(input("El monto no puede ser negativo (presione 0 para cancelar): "))
 
     cuentaOrigen = cuentaDestino = users[nombreUsuario]["CVU"]
-    tipoTransaccion = "ingreso"
+    tipoTransaccion = "Ingreso"
     saldo = 0
 
     if monto > 0:
@@ -80,7 +79,7 @@ def sendMoney(nombreUsuario, users):
         opcion = input()
 
     if opcion in ["1","2"]:
-        tipoTransaccion = "envioInterno" if opcion == "1" else "envioExterno"
+        tipoTransaccion = "Envío interno" if opcion == "1" else "Envío externo"
         monto = float(input("Ingrese el monto que desea enviar: "))
         dinero_en_cuenta = usuarios.getBalance(nombreUsuario)
 
@@ -96,7 +95,7 @@ def sendMoney(nombreUsuario, users):
                 print("Formato incorrecto. Revise el número y vuelva a intentar")
                 cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino (0 para volver): ")
 
-            if tipoTransaccion == "envioInterno" and cuentaDestino != "0":
+            if tipoTransaccion == "Envío interno" and cuentaDestino != "0":
                 #Validamos que la cuenta existe en Bankando
                 while cuentaDestino != "0" and not checkCVU(cuentaDestino, users):
                     print("No existe esa cuenta en Bankando. Revise el número de CVU")
@@ -126,7 +125,7 @@ def payUtilities(nombreUsuario, users):
     factura = input("Ingrese el número de la factura que desea pagar: ")
     monto = float(input("Ingrese el monto que desea enviar: "))
     saldo = 0
-    tipoTransaccion = "pagoServicio"
+    tipoTransaccion = "Pago de servicio"
     dinero_en_cuenta = usuarios.getBalance(nombreUsuario)
 
     #Validamos que tenga dinero suficiente en su cuenta
@@ -147,7 +146,7 @@ def payUtilities(nombreUsuario, users):
 #Le sirve al usuario para consultar el saldo de su cuenta
 def showBalance(nombreUsuario, users):
     dataUsuario = users.get(nombreUsuario)
-    saldo = dataUsuario.get("dinero")
+    saldo = dataUsuario.get("Saldo")
     print(f"El saldo de su cuenta es {saldo}")
 
 
@@ -168,17 +167,17 @@ def showCVU(nombreUsuario, users):
 #Luego de cada operación, el movimiento se registra acá para el control del banco en el archivo transacciones
 def registerTransaction(nombreUsuario, tipoTransaccion, monto, datoTransaccion):
     nuevaTransaccion = {}
-    nuevaTransaccion["nombre_usuario"] = nombreUsuario
-    nuevaTransaccion["tipo_transaccion"] = tipoTransaccion
+    nuevaTransaccion["Usuario"] = nombreUsuario
+    nuevaTransaccion["Tipo de transacción"] = tipoTransaccion
     fecha = registerDate()
-    nuevaTransaccion["fecha"] = fecha
-    nuevaTransaccion["monto"] = monto
-    if tipoTransaccion == "ingreso":
-        nuevaTransaccion["cuenta_origen"] = datoTransaccion
-    elif tipoTransaccion == "envioInterno" or tipoTransaccion == "envioExterno":
-        nuevaTransaccion["CVU_destino"] = datoTransaccion
+    nuevaTransaccion["Fecha"] = fecha
+    nuevaTransaccion["Monto"] = monto
+    if tipoTransaccion == "Ingreso":
+        nuevaTransaccion["Cuenta origen"] = datoTransaccion
+    elif tipoTransaccion == "Envío interno" or tipoTransaccion == "Envío externo":
+        nuevaTransaccion["CVU destino"] = datoTransaccion
     else:
-        nuevaTransaccion["numero_factura"] = datoTransaccion
+        nuevaTransaccion["Número de factura"] = datoTransaccion
     
     #Actualiza el archivo transacciones de Bankando con el nuevo movimiento
     transacciones = getTransaction()
@@ -228,13 +227,13 @@ def chooseReportByTransaction():
         print("Por favor, ingrese una opción correcta (1, 2, 3 ó 4): ")
         opcion = input()
     if opcion == "1":
-        tipoTransaccion = "ingreso"
+        tipoTransaccion = "Ingreso"
     elif opcion == "2":
-        tipoTransaccion = "envioInterno"
+        tipoTransaccion = "Envío interno"
     elif opcion == "3":
-        tipoTransaccion = "envioExterno"
+        tipoTransaccion = "Envío externo"
     else:
-        tipoTransaccion = "pagoServicio"
+        tipoTransaccion = "Pago de servicio"
     
     return tipoTransaccion
 
@@ -276,7 +275,7 @@ def showTransactionsByDate(nombreUsuario, transacciones):
         fechaFinal = checkDate(fechaUsuarioFinal)
     
     
-    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario and tuple(valor["fecha"][:3]) >= fechaInicial and tuple(valor["fecha"][:3]) <= fechaFinal]
+    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["Usuario"] == nombreUsuario and tuple(valor["Fecha"][:3]) >= fechaInicial and tuple(valor["Fecha"][:3]) <= fechaFinal]
     corteOrdenado = sorted(corte)
     if len(corteOrdenado) != 0:
         printReports(corteOrdenado)
@@ -298,7 +297,7 @@ def showMostRecentTransactions(nombreUsuario, transacciones):
     if cantidad > totalUsuario:
         cantidad = totalUsuario
     
-    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
+    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["Usuario"] == nombreUsuario]
     corteOrdenado = sorted(corte)
     if cantidad >= len(corteOrdenado):
         printReports(corteOrdenado)
@@ -324,7 +323,7 @@ def showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones):
     if cantidad > totalUsuario:
         cantidad = totalUsuario
     
-    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario and valor["tipo_transaccion"] == tipoTransaccion]
+    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["Usuario"] == nombreUsuario and valor["Tipo de transacción"] == tipoTransaccion]
     corteOrdenado = sorted(corte)
     if cantidad >= len(corteOrdenado):
         printReports(corteOrdenado)
@@ -334,7 +333,7 @@ def showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones):
 
 #Valida el total de transacciones realizadas para saber si podrá mostrar la cantidad solicitada por el usuario o el total existente
 def checkTotalUserTransactions(nombreUsuario, transacciones):
-    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
+    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["Usuario"] == nombreUsuario]
     return len(corte)
     
 
@@ -343,27 +342,28 @@ def printReports(report):
     campos = ["Nombre de usuario", "Tipo de transacción", "Fecha", "Monto", "Cuenta origen", "Cuenta destino", "Número de factura"]
     listaFinal= [transaction for id_number, transaction in report]
     for transaction in listaFinal:
-        #El contador sirve para reemplazar la clave por el string adecuado de la lista campos
-        contador = 0
-        while contador < len(transaction):
-            for key, value in transaction.items():
-                #Para valores que son iguales en todos los registros
-                if contador <= 3:
-                    if key == "fecha":
-                        print(f"{campos[contador]}:", "/".join([str(elemento) for elemento in value[:3]])) #Convierte el formato fecha a string con / como separador
-                        contador += 1
-                    else:
-                        print(f"{campos[contador]}:", value)
-                        contador += 1
-                #Para valores que cambian en el registro según la transacción
-                else:
-                    if key == "cuenta_origen":
-                        print(f"{campos[contador]}:", value)
-                        contador += 1
-                    elif key == "CVU_destino":
-                        print(f"{campos[contador+1]}:", value)
-                        contador += 1
-                    else:
-                        print(f"{campos[contador+2]}:", value)
-                        contador += 1
-        print()
+        print(transaction)
+        # #El contador sirve para reemplazar la clave por el string adecuado de la lista campos
+        # contador = 0
+        # while contador < len(transaction):
+        #     for key, value in transaction.items():
+        #         #Para valores que son iguales en todos los registros
+        #         if contador <= 3:
+        #             if key == "Fecha":
+        #                 print(f"{campos[contador]}:", "/".join([str(elemento) for elemento in value[:3]])) #Convierte el formato fecha a string con / como separador
+        #                 contador += 1
+        #             else:
+        #                 print(f"{campos[contador]}:", value)
+        #                 contador += 1
+        #         #Para valores que cambian en el registro según la transacción
+        #         else:
+        #             if key == "Cuenta origen":
+        #                 print(f"{campos[contador]}:", value)
+        #                 contador += 1
+        #             elif key == "CVU destino":
+        #                 print(f"{campos[contador+1]}:", value)
+        #                 contador += 1
+        #             else:
+        #                 print(f"{campos[contador+2]}:", value)
+        #                 contador += 1
+        # print()

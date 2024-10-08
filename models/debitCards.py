@@ -14,10 +14,10 @@ def createDebitCard(username, users):
     users (Dict): Usuarios del sistema
     """
 
-    userFullName = users[username]["apellido"] + " " + users[username]["nombre"]
+    userFullName = users[username]["Apellido"] + " " + users[username]["Nombre"]
 
     # Cuando veamos excepciones vamos a contemplar el caso de que entren parametros vacios
-    with open(DEBIT_CARD_PATH, 'r') as file:
+    with open(DEBIT_CARD_PATH, 'r', encoding='utf-8') as file:
         debit_cards = json.load(file)
 
     create = True
@@ -36,15 +36,15 @@ def createDebitCard(username, users):
         valid_from = datetime.now().timetuple()[:3]
         expires_end = (datetime.now().year + 5, datetime.now().month, datetime.now().day)
         debit_card_details = {
-            "card_number": card_number,
-            "valid_from": valid_from,
-            "expires_end": expires_end,
-            "security_code": security_code,
-            "full_name": userFullName,
+            "Número de tarjeta": card_number,
+            "Válida desde": valid_from,
+            "Válida hasta": expires_end,
+            "Código de seguridad": security_code,
+            "Nombre completo": userFullName,
         }
 
         debit_cards[username] = debit_card_details
-        with open(DEBIT_CARD_PATH, 'w') as file:
+        with open(DEBIT_CARD_PATH, 'w', encoding='utf-8') as file:
             json.dump(debit_cards, file, indent=4)
             
         print("Tarjeta de débito creada exitosamente.")
@@ -53,7 +53,7 @@ def getAllDebitCards():
     """
     Devuelve todas las tarjetas de débito de los usuarios.
     """
-    with open(DEBIT_CARD_PATH, 'r') as file:
+    with open(DEBIT_CARD_PATH, 'r', encoding='utf-8') as file:
         debit_cards = json.load(file)
     return debit_cards
 
@@ -65,7 +65,7 @@ def getOneDebitCard(username):
     
     username (String): Nombre de usuario
     """
-    with open(DEBIT_CARD_PATH, 'r') as file:
+    with open(DEBIT_CARD_PATH, 'r', encoding='utf-8') as file:
         debit_cards = json.load(file)
     
     if username in debit_cards:
