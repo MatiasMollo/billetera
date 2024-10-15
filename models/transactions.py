@@ -2,6 +2,8 @@
 from datetime import datetime
 import json
 import models.users as usuarios
+from functools import reduce
+
 
 TRANSACTION_PATH = "data/transactions.json"
 
@@ -195,13 +197,14 @@ def showReports(nombreUsuario, users):
     print("1. Mostrar movimientos por fecha")
     print("2. Mostrar movimientos más recientes")
     print("3. Mostrar movimientos por tipo de transacción")
-    print("4. Volver")
+    print("4. Mostrar gastos totales en un mes")
+    print("5. Volver")
     print("===================")
     opcion = input()
 
     transacciones = getTransaction()
     
-    while opcion not in ["1","2","3","4"]:
+    while opcion not in ["1","2","3","4","5"]:
         print("Por favor, ingrese una opción correcta: ")
         opcion = input()
     if opcion == "1":
@@ -211,6 +214,8 @@ def showReports(nombreUsuario, users):
     elif opcion == "3":
         tipoTransaccion = chooseReportByTransaction()
         showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones)
+    elif opcion == "4":
+        showExpensesByMonth(nombreUsuario, transacciones)
 
 
 #Submenú de los reportes a mostrar por tipo de transacción
@@ -272,12 +277,13 @@ def showTransactionsByDate(nombreUsuario, transacciones):
     fechaFinal = checkDate(fechaUsuarioFinal)
     while fechaFinal == None or tuple(fechaInicial) > tuple(fechaFinal):
         print()
-        fechaUsuarioFinal = input("La fecha final debe ser mayor a la fecha inicial y tener un formato válido: ")
+        print("La fecha final debe ser mayor a la fecha inicial y tener un formato válido")
+        fechaUsuarioFinal = input("Por favor, ingrese de nuevo la fecha: ")
         fechaFinal = checkDate(fechaUsuarioFinal)
     
-    
     corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario and tuple(valor["fecha"][:3]) >= fechaInicial and tuple(valor["fecha"][:3]) <= fechaFinal]
-    corteOrdenado = sorted(corte)
+    corteOrdenado = sorted(corte, key= lambda x : x[1]["fecha"])
+
     if len(corteOrdenado) != 0:
         printReports(corteOrdenado)
     else:
@@ -298,7 +304,7 @@ def showMostRecentTransactions(nombreUsuario, transacciones):
     if cantidad > totalUsuario:
         cantidad = totalUsuario
     
-    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
+    corte = list(filter(lambda valor : valor[1]["nombre_usuario"] == nombreUsuario, transacciones.items()))
     corteOrdenado = sorted(corte)
     if cantidad >= len(corteOrdenado):
         printReports(corteOrdenado)
@@ -332,10 +338,25 @@ def showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones):
         printReports(corteOrdenado[len(corteOrdenado) - cantidad:])
 
 
+def showExpensesByMonth(nombreUsuario, transacciones):
+    mes = int(input("Indique qué mes desea consultar (1-12): "))
+    #Usar manejo de excepciones para validar    
+    
+    corte = list(filter(lambda valor : valor[1]["nombre_usuario"] == nombreUsuario and valor[1]["tipo_transaccion"] != "ingreso" and valor[1]["fecha"][1] == mes, transacciones.items()))
+    
+    if len(corte) != 0:
+        gastos = reduce(lambda x, y : x + y[1]["monto"], corte, 0)
+        print()
+        print(f"Monto total de pagos y transferencias en el mes: {gastos:.2f} pesos")
+        corteOrdenado = sorted(corte)
+        printReports(corteOrdenado)
+    else:
+        print("No se encontraron movimientos en esas fechas")
+
+
 #Valida el total de transacciones realizadas para saber si podrá mostrar la cantidad solicitada por el usuario o el total existente
 def checkTotalUserTransactions(nombreUsuario, transacciones):
-    corte = [(clave, valor) for clave, valor in transacciones.items() if valor["nombre_usuario"] == nombreUsuario]
-    return len(corte)
+    return reduce(lambda x, y : x + 1, filter(lambda valor : valor["nombre_usuario"] == nombreUsuario, transacciones.values()), 0)
     
 
 #Itera sobre los reportes de transacciones seleccionados para mostrarlos en pantalla con un formato legible para el usuario
@@ -345,12 +366,13 @@ def printReports(report):
     for transaction in listaFinal:
         #El contador sirve para reemplazar la clave por el string adecuado de la lista campos
         contador = 0
+        print()
         while contador < len(transaction):
             for key, value in transaction.items():
                 #Para valores que son iguales en todos los registros
                 if contador <= 3:
                     if key == "fecha":
-                        print(f"{campos[contador]}:", "/".join([str(elemento) for elemento in value[:3]])) #Convierte el formato fecha a string con / como separador
+                        print(f"{campos[contador]}:", "/".join([str(elemento) for elemento in value[2::-1]])) #Convierte el formato fecha a string con / como separador
                         contador += 1
                     else:
                         print(f"{campos[contador]}:", value)
@@ -367,3 +389,84 @@ def printReports(report):
                         print(f"{campos[contador+2]}:", value)
                         contador += 1
         print()
+
+
+#Calcula el monto proporcional de cada cuota de un préstamo
+def loanResult(monto, cuotas):
+    tasa = 5.67/100
+    resultado = (monto + (monto*tasa*cuotas)) / cuotas
+
+    return round(resultado, 2)
+
+#Muestra las opciones de pago de un préstamo según las cuotas
+def showLoan(monto, lista_cuotas):
+    print()
+    print("Opciones de plazos")
+    print("===================")
+    lista_resultados = list(map(lambda cuotas : loanResult(monto, cuotas), lista_cuotas))
+    contador = 0
+    for cantidad in lista_cuotas:
+        print(f"{cantidad} cuotas de {lista_resultados[contador]:.2f} pesos")
+        contador += 1
+    print()
+
+#Función para simular y solicitar un préstamo personal
+def requestLoan(nombreUsuario, users):
+    print("===================")
+    print("1. Simular préstamo")
+    print("2. Solicitar préstamo")
+    print("3. Volver")
+    print("===================")
+
+    ret = False
+    lista_cuotas = [3, 6, 9, 12]
+    limite = 1000000
+    opcion = input("Opción: ")
+    
+    while opcion not in ["1","2","3"]:
+        print("Por favor, elija una opción válida: ")
+        opcion = input("Opción: ")
+
+    if opcion == "1":
+        print("El monto límite para un préstamo personal es de 1.000.000 pesos")
+        monto = float(input("Ingrese el monto que le gustaría solicitar -sin puntos ni comas-: "))
+        while monto <= 0 or monto > limite:
+            monto = float(input("Por favor, ingrese un monto válido: "))
+        showLoan(monto, lista_cuotas)
+        ret = True
+    
+    elif opcion == "2":
+        preguntar = True 
+        while preguntar:
+            print("El monto límite para un préstamo personal es de 1.000.000 pesos")
+            print()
+            monto = float(input("Ingrese el monto a solicitar -sin puntos ni comas- (para cancelar y salir marque 0): "))
+            while monto < 0 or monto > limite:
+                monto = float(input("Por favor, ingrese un monto válido (para cancelar y salir marque 0): "))
+            if monto > 0:           
+                print(f"Indique el número de cuotas a pagar ({lista_cuotas}): ", end="")
+                cuotas = int(input())
+                while cuotas not in lista_cuotas:
+                    print(f"Indique un número válido de cuotas a pagar ({lista_cuotas}): ", end="")
+                    cuotas = int(input())
+                print(f"Si confirma en el siguiente paso, su préstamo por {monto:.2f} pesos lo pagará en {cuotas} cuotas de {loanResult(monto, cuotas)} pesos")
+                print()
+
+                ejecutar = input(f"¿Quiere solicitar el préstamo indicado? (S/N): ").lower()
+                if ejecutar == "s":            
+                    cuentaDestino = users[nombreUsuario]["CVU"]
+                    tipoTransaccion = "ingreso"
+                    saldo = 0
+                    ret,saldo = usuarios.increaseBalance(cuentaDestino,monto,nombreUsuario)
+                    if ret:
+                        print(f"\nEl dinero ha sido depositado en su cuenta vinculada. Su nuevo saldo es {saldo}")
+                        preguntar = False
+                        ret = registerTransaction(nombreUsuario, tipoTransaccion, monto, cuentaDestino)
+                    else:
+                        print("No se pudo encontrar la cuenta, intente nuevamente.")
+                else:
+                    preguntar = False
+            else:
+                preguntar = False
+
+    return ret     

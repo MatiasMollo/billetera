@@ -9,6 +9,7 @@ MENU = {
     "Solicitar tarjeta de débito" : card.createDebitCard,
     "Consultar mi tarjeta" : card.consultCard,
     "Pagar servicios" : transaction.payUtilities,
+    "Solicitar préstamo" : transaction.requestLoan,
     "Consultar mi CVU": user.consultCVU,
     "Consultar mi saldo": user.consultBalance,
     "Cerrar sesión" : []
