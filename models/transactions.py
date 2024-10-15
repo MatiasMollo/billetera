@@ -43,10 +43,13 @@ def checkFormat(cuentaDestino):
 
 
 #Deposita dinero a la cuenta del usuario que viene de una cuenta externa
-def depositMoney(nombreUsuario, users):
+def depositMoney(nombreUsuario):
     monto = float(input("Ingrese el monto que desea depositar en su cuenta: "))
     while monto < 0:
         monto = float(input("El monto no puede ser negativo (presione 0 para cancelar): "))
+
+    #Obtenemos el listado de usuarios actualizado
+    users = usuarios.getUser()
 
     cuentaOrigen = cuentaDestino = users[nombreUsuario]["CVU"]
     tipoTransaccion = "ingreso"
@@ -67,7 +70,7 @@ def depositMoney(nombreUsuario, users):
     
 
 #Envía dinero a una cuenta destino dentro o fuera de Bankando, y se registra la transacción en transacciones
-def sendMoney(nombreUsuario, users):
+def sendMoney(nombreUsuario):
     print("===================")
     print("1. Enviar a una cuenta de Bankando")
     print("2. Enviar a una cuenta de otro banco")
@@ -100,7 +103,7 @@ def sendMoney(nombreUsuario, users):
 
             if tipoTransaccion == "envioInterno" and cuentaDestino != "0":
                 #Validamos que la cuenta existe en Bankando
-                while cuentaDestino != "0" and not checkCVU(cuentaDestino, users):
+                while cuentaDestino != "0" and not checkCVU(cuentaDestino):
                     print("No existe esa cuenta en Bankando. Revise el número de CVU")
                     cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino (0 para volver): ")
 
@@ -124,7 +127,7 @@ def sendMoney(nombreUsuario, users):
 
     return ret
 
-def payUtilities(nombreUsuario, users):
+def payUtilities(nombreUsuario):
     factura = input("Ingrese el número de la factura que desea pagar: ")
     monto = float(input("Ingrese el monto que desea enviar: "))
     saldo = 0
@@ -147,14 +150,16 @@ def payUtilities(nombreUsuario, users):
     return monto, saldo, tipoTransaccion
 
 #Le sirve al usuario para consultar el saldo de su cuenta
-def showBalance(nombreUsuario, users):
-    dataUsuario = users.get(nombreUsuario)
+def showBalance(nombreUsuario):
+    dataUsuario = usuarios.get(nombreUsuario)
     saldo = dataUsuario.get("dinero")
     print(f"El saldo de su cuenta es {saldo}")
 
 
 #Valida si la cuenta existe en Bankando
-def checkCVU(cuentaDestino, users):
+def checkCVU(cuentaDestino):
+    users = usuarios.getUser()
+    #! A revisar: 2 returns
     for valor in users.values():
         if valor["CVU"] == cuentaDestino:
             return True
@@ -162,8 +167,8 @@ def checkCVU(cuentaDestino, users):
 
 
 #Le sirve al usuario para consultar el CVU de su cuenta
-def showCVU(nombreUsuario, users):
-    dataUsuario = users.get(nombreUsuario)
+def showCVU(nombreUsuario):
+    dataUsuario = usuarios.get(nombreUsuario)
     cuenta = dataUsuario.get("CVU")
     print(f"CVU: {cuenta}")
 
@@ -192,7 +197,7 @@ def registerTransaction(nombreUsuario, tipoTransaccion, monto, datoTransaccion):
 
 
 #Le muestra al usuario los reportes de sus movimientos por fechas seleccionadas, los más recientes (cantidad a elegir dentro del total) y por tipo de transacción realizada (cantidad a elegir dentro del total)
-def showReports(nombreUsuario, users):
+def showReports(nombreUsuario):
     print("===================")
     print("1. Mostrar movimientos por fecha")
     print("2. Mostrar movimientos más recientes")
@@ -411,7 +416,7 @@ def showLoan(monto, lista_cuotas):
     print()
 
 #Función para simular y solicitar un préstamo personal
-def requestLoan(nombreUsuario, users):
+def requestLoan(nombreUsuario):
     print("===================")
     print("1. Simular préstamo")
     print("2. Solicitar préstamo")
@@ -453,7 +458,8 @@ def requestLoan(nombreUsuario, users):
                 print()
 
                 ejecutar = input(f"¿Quiere solicitar el préstamo indicado? (S/N): ").lower()
-                if ejecutar == "s":            
+                if ejecutar == "s":  
+                    users = usuarios.getUser()          
                     cuentaDestino = users[nombreUsuario]["CVU"]
                     tipoTransaccion = "ingreso"
                     saldo = 0

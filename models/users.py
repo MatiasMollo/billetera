@@ -202,13 +202,13 @@ def getCVU(username):
     return users[username]["CVU"]
 
 
-def consultCVU(username,users):
+def consultCVU(username):
     """
         Función con mensaje personalizado para ser llamada desde el menú
     """
     print(f"Su CVU es: {getCVU(username)}")
 
-def consultBalance(username,users):
+def consultBalance(username):
     """
         Función con mensaje personalizado para ser llamada desde el menú
     """
