@@ -9,6 +9,7 @@ MENU = {
     "Solicitar tarjeta de débito" : card.createDebitCard,
     "Consultar mi tarjeta" : card.consultCard,
     "Pagar servicios" : transaction.payUtilities,
+    "Solicitar préstamo" : transaction.requestLoan,
     "Consultar mi CVU": user.consultCVU,
     "Consultar mi saldo": user.consultBalance,
     "Cerrar sesión" : []
@@ -110,7 +111,7 @@ while option != salir:
         while option != salir:
             if option in range(1,len(MENU)):
                 #Hace el llamado a la función correspondiente y pasa el usuario autenticado junto con la lista completa de usuarios
-                MENU[list(MENU.keys())[option-1]](logged,users) 
+                MENU[list(MENU.keys())[option-1]](logged)
                 printMenu()
             else:
                 print("La opción no es válida \n")
