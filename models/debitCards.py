@@ -1,18 +1,20 @@
 import json
 import random
 from datetime import datetime
+import models.users as usuarios
 
 DEBIT_CARD_PATH = 'data/debitCards.json'
 
-def createDebitCard(username, users):
+def createDebitCard(username):
     """
     Obtiene el nombre de usuario y el nombre completo del usuario y crea una tarjeta de débito asociada a él.
 
     Parámetros:
     
     username (String): Nombre de usuario
-    users (Dict): Usuarios del sistema
     """
+
+    users = usuarios.getUser()
 
     userFullName = users[username]["apellido"] + " " + users[username]["nombre"]
 
@@ -74,7 +76,7 @@ def getOneDebitCard(username):
         return False
     
 
-def consultCard(username,users):
+def consultCard(username):
     """
         Imprime los datos de la tarjeta
     """
