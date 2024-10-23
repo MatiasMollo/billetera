@@ -31,7 +31,7 @@ def printLogin():
     print("3. Salir")
     print("===================")
 
-    return [1,2,3]
+    return ["1","2","3"]
 
 def printMenu():
     """
@@ -50,21 +50,20 @@ def printMenu():
 
 option = 0
 
-while option != salir:
+while option != str(salir):
     print("Bienvenido a su billetera virtual, seleccione una opción del menú")
     validOptions = printLogin()
     salir = len(validOptions) # Sobreescribimos "salir"
-    option = int(input("Opción: "))
+    option = input("Opción: ")
 
     #Verificación de opción válida
     while option not in validOptions:
         print("La opción no es válida, intente nuevamente: ")
-        option = int(input("Opción: "))
+        option = input("Opción: ")
 
     logged = False
     retry = True
-    #Inicio de sesión
-    if option == 1:
+    if option == "1": #Inicio de sesión
         while not logged and retry:
             username = input("Ingrese su nombre de usuario: ")
             password = input("Ingrese su contraseña: ")
@@ -76,8 +75,7 @@ while option != salir:
                 print("\nLas credenciales no coinciden con nuestros registros.")
                 retry = True if input("¿Desea intentarlo nuevamente? S / N: ") in ["S",'s'] else False
 
-    elif option == 2: #Registro de usuario
-        
+    elif option == "2": #Registro de usuario
         while retry:
             username = input("Ingrese su nombre de usuario: ")
             name = input("Ingrese su nombre: ")
@@ -103,19 +101,29 @@ while option != salir:
 
     if logged:
         printMenu()
-        option = int(input("Ingrese su opción: "))
-        users = user.getUser()
+        error = True
+        while error:
+            try:
+                option = input("Ingrese su opción: ")
+                error = False
+            except:
+                print("La opción no es válida")
 
+        users = user.getUser()
         salir = len(MENU)
         
-        while option != salir:
-            if option in range(1,len(MENU)):
-                #Hace el llamado a la función correspondiente y pasa el usuario autenticado junto con la lista completa de usuarios
-                MENU[list(MENU.keys())[option-1]](logged)
-                printMenu()
-            else:
-                print("La opción no es válida \n")
-            option = int(input("Ingrese su opción: "))
+        while option != str(salir):
+            try:
+                option = int(option)
+                if option in range(1,len(MENU)):
+                    #Hace el llamado a la función correspondiente y pasa el usuario autenticado junto con la lista completa de usuarios
+                    MENU[list(MENU.keys())[option-1]](logged) #! El error está acá cuando se ingresa 4
+                    printMenu()
+                else:
+                    print("La opción no es válida \n")
+                option = input("Ingrese su opción: ")
+            except Exception:
+                print("Ha ocurrido un error, vuelva a intentarlo.") #!  Bucle infinito al tocar "4"
 
         # Sobreescribimos la variable "salir" para que pregunte el inicio de sesión nuevamente
         salir = len(validOptions) 
