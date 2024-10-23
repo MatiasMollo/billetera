@@ -118,16 +118,17 @@ while option != str(salir):
                 if option in range(1,len(MENU)):
                     #Hace el llamado a la función correspondiente y pasa el usuario autenticado junto con la lista completa de usuarios
                     MENU[list(MENU.keys())[option-1]](logged)
-
-                    #4 espera dos parámetros y se está ingresando solo uno, es por esto que rompe y se vuelve a llamar a la función
-
                     printMenu()
                 else:
-                    print("La opción no es válida \n")
+                    print("La opción no es válida")
             except Exception:
+                print("\n------------------------------------------")
                 print("Ha ocurrido un error, vuelva a intentarlo.")
+                print("------------------------------------------")
+                printMenu()
             finally:
-                option = input("Ingrese su opción: ")
+                option = input("\nIngrese su opción: ")
+                print()
 
         # Sobreescribimos la variable "salir" para que pregunte el inicio de sesión nuevamente
         salir = len(validOptions) 
