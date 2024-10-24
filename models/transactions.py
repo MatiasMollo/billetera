@@ -3,7 +3,7 @@ from datetime import datetime
 import json
 import models.users as usuarios
 from functools import reduce
-
+import logsController.errorHandler as errorsController
 
 TRANSACTION_PATH = "data/transactions.json"
 
@@ -262,8 +262,9 @@ def checkDate(fechaString):
         #Si es válida, devuelve la tupla (año, mes, día)
         return (fechaValida.year, fechaValida.month, fechaValida.day)
     
-    except ValueError:
+    except ValueError as e:
         #Si no es válida, advertimos que la fecha es incorrecta
+        errorsController.logError(type(e).__name__, str(e))
         print("Fecha inválida. Verifique el uso del formato correcto: Año-Mes-Día(yyyy-mm-dd)")
         
         return None
