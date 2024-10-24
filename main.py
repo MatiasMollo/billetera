@@ -1,6 +1,7 @@
 import models.users as user
 import models.transactions as transaction
 import models.debitCards as card
+import logsController.errorHandler as errorsController
 
 MENU = {
     "Ingresar dinero" : transaction.depositMoney,
@@ -121,7 +122,8 @@ while option != str(salir):
                     printMenu()
                 else:
                     print("La opción no es válida")
-            except Exception:
+            except Exception as e:
+                errorsController.logError(type(e).__name__, str(e))
                 print("\n------------------------------------------")
                 print("Ha ocurrido un error, vuelva a intentarlo.")
                 print("------------------------------------------")
