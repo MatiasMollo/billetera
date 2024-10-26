@@ -44,9 +44,13 @@ def checkFormat(cuentaDestino):
 
 #Deposita dinero a la cuenta del usuario que viene de una cuenta externa
 def depositMoney(nombreUsuario):
-    monto = float(input("Ingrese el monto que desea depositar en su cuenta: "))
-    while monto < 0:
-        monto = float(input("El monto no puede ser negativo (presione 0 para cancelar): "))
+    error = True
+    while error:
+        try:
+            monto = float(input("Ingrese el monto que desea depositar en su cuenta: "))
+            error = False
+        except Exception as e:
+            print("El monto debe ser numérico y positivo (presione 0 para cancelar)")
 
     #Obtenemos el listado de usuarios actualizado
     users = usuarios.getUser()
@@ -86,12 +90,19 @@ def sendMoney(nombreUsuario):
 
     if opcion in ["1","2"]:
         tipoTransaccion = "envioInterno" if opcion == "1" else "envioExterno"
-        monto = float(input("Ingrese el monto que desea enviar: "))
-        dinero_en_cuenta = usuarios.getBalance(nombreUsuario)
 
-        while dinero_en_cuenta < monto and monto != 0:
-            print(f"No hay suficiente dinero en la cuenta, su saldo es de ${dinero_en_cuenta}")
-            monto = float(input("Ingrese otro monto o presione 0 para salir: "))
+        error = True
+        while error:
+            try:
+                monto = float(input("Ingrese el monto que desea enviar: "))
+                dinero_en_cuenta = usuarios.getBalance(nombreUsuario)
+
+                while dinero_en_cuenta < monto and monto != 0:
+                    print(f"No hay suficiente dinero en la cuenta, su saldo es de ${dinero_en_cuenta}")
+                    monto = float(input("Ingrese otro monto o presione 0 para salir: "))
+                error = False
+            except Exception as e:
+                print("Ocurrió un error, vuelva a intentarlo.")
 
         if monto > 0:
             cuentaDestino = input("Ingrese el CBU o CVU de la cuenta destino: ")
@@ -159,7 +170,6 @@ def showBalance(nombreUsuario):
 #Valida si la cuenta existe en Bankando
 def checkCVU(cuentaDestino):
     users = usuarios.getUser()
-    #! A revisar: 2 returns
     for valor in users.values():
         if valor["CVU"] == cuentaDestino:
             return True
@@ -267,7 +277,6 @@ def checkDate(fechaString):
         errorsController.logError(type(e).__name__, str(e))
         print("Fecha inválida. Verifique el uso del formato correcto: Año-Mes-Día(yyyy-mm-dd)")
         
-        return None
 
 
 #Reporte para el usuario de sus movimientos por fecha
@@ -345,9 +354,14 @@ def showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones):
 
 
 def showExpensesByMonth(nombreUsuario, transacciones):
-    mes = int(input("Indique qué mes desea consultar (1-12): "))
-    #Usar manejo de excepciones para validar    
-    
+    error = True
+    while error:
+        try:
+            mes = int(input("Indique qué mes desea consultar (1-12): "))
+            error = False
+        except Exception as e:
+            print("El dato ingresado no es válido, intente nuevamente")
+
     corte = list(filter(lambda valor : valor[1]["nombre_usuario"] == nombreUsuario and valor[1]["tipo_transaccion"] != "ingreso" and valor[1]["fecha"][1] == mes, transacciones.items()))
     
     if len(corte) != 0:
@@ -434,7 +448,7 @@ def requestLoan(nombreUsuario):
         opcion = input("Opción: ")
 
     if opcion == "1":
-        print("El monto límite para un préstamo personal es de 1.000.000 pesos")
+        print("El monto límite para un préstamo personal es de 1.000.000 pesos") #Hardcodeo
         monto = float(input("Ingrese el monto que le gustaría solicitar -sin puntos ni comas-: "))
         while monto <= 0 or monto > limite:
             monto = float(input("Por favor, ingrese un monto válido: "))
@@ -444,7 +458,7 @@ def requestLoan(nombreUsuario):
     elif opcion == "2":
         preguntar = True 
         while preguntar:
-            print("El monto límite para un préstamo personal es de 1.000.000 pesos")
+            print("El monto límite para un préstamo personal es de 1.000.000 pesos") #Hardcodeo
             print()
             monto = float(input("Ingrese el monto a solicitar -sin puntos ni comas- (para cancelar y salir marque 0): "))
             while monto < 0 or monto > limite:
