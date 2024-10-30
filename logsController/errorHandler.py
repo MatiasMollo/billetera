@@ -1,12 +1,17 @@
 from datetime import datetime
 import re
+import traceback
 
-def logError(error_type: str, error_message: str):
+def logError(exception: Exception):
     current_time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     
     file = open('./logsController/logsErrors.txt', 'a')
+    
+    error_type = type(exception).__name__ # Obtenemos el nombre del error
+    errorInfo = traceback.format_list(traceback.extract_tb(exception.__traceback__)) # Obtenemos la información del error capturada en el traceback
+    errorFile = errorInfo[1] # Obtenemos el nombre del archivo en donde falló
 
-    file.write(f"[{current_time}] {error_type}: {error_message}\n")
+    file.write(f"[{current_time}]: {error_type} {errorFile}\n")
 
     file.close()
 

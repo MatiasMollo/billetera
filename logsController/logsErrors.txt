@@ -1,7 +1,8 @@
-[24/10/2024 19:00:55] ZeroDivisionError: division by zero
-[24/10/2024 19:09:14] ZeroDivisionError: division by zero
-[24/10/2024 19:09:15] ZeroDivisionError: division by zero
-[24/10/2024 19:11:20] ZeroDivisionError: division by zero
-[24/10/2024 19:31:07] ValueError: invalid literal for int() with base 10: 'abc'
-[25/10/2024 22:14:15] ValueError: could not convert string to float: 'a'
-[25/10/2024 22:24:16] ValueError: could not convert string to float: 'a'
+[30/10/2024 19:42:22]: ZeroDivisionError   File "c:\Users\Matias\OneDrive\Documents\uade\billetera\models\transactions.py", line 47, in depositMoney
+    a = 2 / 0
+        ~~^~~
+
+[30/10/2024 19:42:37]: ZeroDivisionError   File "c:\Users\Matias\OneDrive\Documents\uade\billetera\models\transactions.py", line 47, in depositMoney
+    a = 2 / 0
+        ~~^~~
+
