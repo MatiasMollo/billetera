@@ -4,6 +4,7 @@ import json
 import models.users as usuarios
 from functools import reduce
 import logsController.errorHandler as errorsController
+import re
 
 TRANSACTION_PATH = "data/transactions.json"
 
@@ -138,9 +139,43 @@ def sendMoney(nombreUsuario):
 
     return ret
 
+
+def checkBill(servicio, factura):
+    patrones = {
+        "1": "[0-9]{6}-[0-9]{1}",
+        "2": "[A-Z]{2}[0-9]{4}",
+        "3": "[A-Z]{2}-[0-9]{4}-[0-9]",
+    }
+    
+    for clave, valor in patrones.items():
+        if servicio == clave and re.match(valor, factura):
+            return True
+    return False
+
+
 def payUtilities(nombreUsuario):
-    factura = input("Ingrese el número de la factura que desea pagar: ")
-    monto = float(input("Ingrese el monto que desea enviar: "))
+    print()
+    print("===================")
+    print("Servicios afiliados")
+    print("1. Edenor")
+    print("2. Claro")
+    print("3. IPlan")
+    print("===================")
+    servicio = input("Seleccione el servicio que desea pagar: ")
+    while servicio not in ["1", "2", "3"]:
+        servicio = input("Por favor, seleccione uno de los servicios afiliados: ")
+    print()
+    print("===================")
+    print("Debe introducir a continuación el número de la factura a pagar según el formato del servicio")
+    print("=====Ejemplos======")
+    print("Edenor: 123456-7")
+    print("Claro: AF6789")
+    print("IPlan: RE-5678-0")
+    print("===================")
+    factura = input("Factura: ")
+    while not checkBill(servicio, factura):
+        factura = input("Por favor, ingrese el número de factura con el formato correcto de su servicio: ")
+    monto = float(input("Ingrese el monto a pagar: "))
     saldo = 0
     tipoTransaccion = "pagoServicio"
     dinero_en_cuenta = usuarios.getBalance(nombreUsuario)
@@ -148,7 +183,7 @@ def payUtilities(nombreUsuario):
     #Validamos que tenga dinero suficiente en su cuenta
     while monto > dinero_en_cuenta and monto != 0:
         print("No hay dinero suficiente en su cuenta")
-        monto = float(input("Ingrese el monto que desea enviar (0 para cancelar): "))
+        monto = float(input("Ingrese el monto a pagar (0 para cancelar): "))
 
     #Verificamos que el usuario no haya cancelado la operación
     if monto:
