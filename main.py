@@ -122,8 +122,8 @@ while option != str(salir):
                     printMenu()
                 else:
                     print("La opción no es válida")
-            except Exception as e:
-                errorsController.logError(type(e).__name__, str(e))
+            except Exception as exception:
+                errorsController.logError(exception)
                 print("\n------------------------------------------")
                 print("Ha ocurrido un error, vuelva a intentarlo.")
                 print("------------------------------------------")
