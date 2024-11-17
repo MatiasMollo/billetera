@@ -1,3 +1,5 @@
 __pycache__
-data/*
+data/debitCards.json
+data/transactions.json
+data/users.json
 logsController/logsErrors.txt

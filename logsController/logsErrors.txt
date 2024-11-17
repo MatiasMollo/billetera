@@ -6,3 +6,15 @@
     a = 2 / 0
         ~~^~~
 
+[17/11/2024 18:38:08]: ValueError   File "c:\Users\Matias\OneDrive\Documents\uade\billetera\main.py", line 118, in <module>
+    option = int(option)
+             ^^^^^^^^^^^
+
+[17/11/2024 18:39:33]: ZeroDivisionError   File "c:\Users\Matias\OneDrive\Documents\uade\billetera\models\transactions.py", line 48, in depositMoney
+    b = 2/0
+        ~^~
+
+[17/11/2024 18:41:25]: ValueError   File "c:\Users\Matias\OneDrive\Documents\uade\billetera\main.py", line 118, in <module>
+    option = int(option)
+             ^^^^^^^^^^^
+
