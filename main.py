@@ -105,7 +105,7 @@ while option != str(salir):
         error = True
         while error:
             try:
-                option = input("Ingrese su opción: ")
+                option = int(input("Ingrese su opción: "))
                 error = False
             except:
                 print("La opción no es válida")
@@ -113,7 +113,7 @@ while option != str(salir):
         users = user.getUser()
         salir = len(MENU)
         
-        while option != str(salir):
+        while str(option) != str(salir):
             try:
                 option = int(option)
                 if option in range(1,len(MENU)):
