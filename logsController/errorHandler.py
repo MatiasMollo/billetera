@@ -12,7 +12,7 @@ def logError(exception: Exception):
         errorInfo = traceback.format_list(traceback.extract_tb(exception.__traceback__)) # Obtenemos la información del error capturada en el traceback
         errorFile = errorInfo[len(errorInfo)-1] # Obtenemos el nombre del archivo en donde falló
 
-        file.write(f"[{current_time}]: {error_type} {errorFile}\n")
+        file.write(f"[{current_time}]: {error_type} ({exception}) {errorFile}\n")
 
         file.close()
     except Exception as exp:

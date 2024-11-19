@@ -483,7 +483,7 @@ def requestLoan(nombreUsuario):
         opcion = input("Opción: ")
 
     if opcion == "1":
-        print("El monto límite para un préstamo personal es de 1.000.000 pesos") #Hardcodeo
+        print("El monto límite para un préstamo personal es de 1.000.000 pesos")
         monto = float(input("Ingrese el monto que le gustaría solicitar -sin puntos ni comas-: "))
         while monto <= 0 or monto > limite:
             monto = float(input("Por favor, ingrese un monto válido: "))
@@ -493,7 +493,7 @@ def requestLoan(nombreUsuario):
     elif opcion == "2":
         preguntar = True 
         while preguntar:
-            print("El monto límite para un préstamo personal es de 1.000.000 pesos") #Hardcodeo
+            print("El monto límite para un préstamo personal es de 1.000.000 pesos")
             print()
             monto = float(input("Ingrese el monto a solicitar -sin puntos ni comas- (para cancelar y salir marque 0): "))
             while monto < 0 or monto > limite:
