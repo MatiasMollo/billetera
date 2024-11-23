@@ -1,0 +1,32 @@
+{
+    "user1": {
+        "card_number": "1234567890123456",
+        "full_name": "user1",
+        "valid_from": [
+            2024,
+            1,
+            1
+        ],
+        "expires_end": [
+            2029,
+            1,
+            1
+        ],
+        "security_code": "1234"
+    },
+    "user2": {
+        "card_number": "9876543210987654",
+        "full_name": "user2",
+        "valid_from": [
+            2024,
+            1,
+            1
+        ],
+        "expires_end": [
+            2029,
+            1,
+            1
+        ],
+        "security_code": "5678"
+    }
+}

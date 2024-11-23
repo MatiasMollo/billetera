@@ -18,7 +18,6 @@ def createDebitCard(username):
 
     userFullName = users[username]["apellido"] + " " + users[username]["nombre"]
 
-    # Cuando veamos excepciones vamos a contemplar el caso de que entren parametros vacios
     with open(DEBIT_CARD_PATH, 'r') as file:
         debit_cards = json.load(file)
 
