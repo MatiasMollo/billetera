@@ -3,3 +3,4 @@ data/debitCards.json
 data/transactions.json
 data/users.json
 logsController/logsErrors.txt
+.pytest_cache
