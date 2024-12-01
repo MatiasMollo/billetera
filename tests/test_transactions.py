@@ -1,16 +1,16 @@
-
 import pytest
 import models.transactions as transactions
 import models.users as users
 import json
 from datetime import datetime
-import re
-from functools import reduce
+import random
 
 TRANSACTION_PATH = 'mockDataTests/mockTransactions.json'
 transactions.TRANSACTION_PATH = TRANSACTION_PATH
-USERS_PATH = 'mockDataTests/mockUserTransactions.json'
-users.PATH = USERS_PATH
+
+USER_PATH = 'mockDataTests/mockUsers.json'
+users.USER_PATH = USER_PATH #guardado de Path para modelo usuarios
+
 transacciones = transactions.getTransaction()
 
 nombreUsuario1 = "Tester4"
@@ -98,17 +98,17 @@ def test_checkDate():
     result = (2024, 11, 30)
     assert transactions.checkDate(fecha) == result, "La fecha no se convirtió a tupla"
 
-    #Falta hacer casos negativos (problemas con None y Errores)
 
+def test_checkCVU():
+    data = users.getUser()
+    current_username = list(data)[0]
+    current_cvu = data[current_username]['CVU']
+    result = transactions.checkCVU(current_cvu)
+    assert result == True, "No se ha encontrado el CVU del usuario"
 
-# def test_checkCVU():
-#     cuentaDestino = "31576359856"
-#     result = transactions.checkCVU(cuentaDestino)
-#     assert result == True, f"El CVU {cuentaDestino} debería existir en el registro de usuarios"
-
-#     # cuentaDestino = "11122233345"
-#     # result = transactions.checkCVU(cuentaDestino)
-#     # assert result == False, f"El CVU {cuentaDestino} no debería existir en el registro de usuarios"
+    new_cvu = users.generateCVU()
+    result = transactions.checkCVU(new_cvu)
+    assert result == False, "Se ha encontrado un CVU para un usuario inexistente"
 
 
 def test_checkInteger():
@@ -152,3 +152,27 @@ def test_loanResult():
     calculo = transactions.loanResult(monto, cuotas)
     resultado_esperado = round((1 + (1 * 5.67/100 * 9)) / 9, 2)
     assert calculo == resultado_esperado, f"Debería retornar {resultado_esperado} para un monto de {monto} y {cuotas} cuotas"
+
+
+def test_registerTransaction():
+    amount = 100
+    origin = users.generateCVU()
+
+    transactions.registerTransaction(
+        "username",
+        "ingreso",
+        amount,
+        origin
+    )
+
+    date = transactions.registerDate()
+
+    data = transactions.getTransaction()
+    current_transaction = data[list(data)[len(data) - 1]]
+
+    assert current_transaction['cuenta_origen'] == origin,"El origen de la última transacción no coincide con el intento de guardado "
+    assert date == tuple(current_transaction["fecha"]),"La fecha de registro no coincide con la última transacción"
+
+
+
+

@@ -1,1 +1,16 @@
-{"1": {"nombre_usuario": "Tester4", "tipo_transaccion": "ingreso", "fecha": [2024, 11, 18, 22, 32, 40], "monto": 2000.0, "cuenta_origen": "44858213860"}, "2": {"nombre_usuario": "Tester4", "tipo_transaccion": "envioExterno", "fecha": [2024, 11, 18, 22, 33, 23], "monto": 200.0, "CVU_destino": "12345678901"}, "3": {"nombre_usuario": "Tester4", "tipo_transaccion": "pagoServicio", "fecha": [2024, 11, 18, 22, 34, 14], "monto": 300.0, "numero_factura": "ER5643"}, "4": {"nombre_usuario": "Tester4", "tipo_transaccion": "envioInterno", "fecha": [2024, 11, 18, 22, 35, 45], "monto": 100.0, "CVU_destino": "31576359856"}, "5": {"nombre_usuario": "Tester4", "tipo_transaccion": "ingreso", "fecha": [2024, 11, 18, 22, 41, 6], "monto": 20000.0, "cuenta_origen": "44858213860"}, "6": {"nombre_usuario": "Tester4", "tipo_transaccion": "ingreso", "fecha": [2024, 11, 19, 18, 18, 1], "monto": 250.0, "cuenta_origen": "44858213860"}, "7": {"nombre_usuario": "Tester4", "tipo_transaccion": "envioInterno", "fecha": [2024, 11, 19, 18, 20, 20], "monto": 650.0, "CVU_destino": "31576359856"}, "8": {"nombre_usuario": "Tester4", "tipo_transaccion": "pagoServicio", "fecha": [2024, 11, 19, 18, 22, 2], "monto": 500.0, "numero_factura": "TE-5421-2"}, "9": {"nombre_usuario": "Tester4", "tipo_transaccion": "pagoServicio", "fecha": [2024, 11, 19, 18, 46, 44], "monto": 300.0, "numero_factura": "456789-5"}, "10": {"nombre_usuario": "Tester4", "tipo_transaccion": "ingreso", "fecha": [2024, 11, 19, 18, 48, 46], "monto": 200000.0, "cuenta_origen": "44858213860"}, "11": {"nombre_usuario": "Tester4", "tipo_transaccion": "ingreso", "fecha": [2024, 11, 26, 9, 7, 17], "monto": 150.0, "cuenta_origen": "44858213860"}}
+{
+    "1": {
+        "nombre_usuario": "mmollo",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            11,
+            30,
+            23,
+            2,
+            30
+        ],
+        "monto": 100.0,
+        "cuenta_origen": "28342540744"
+    }
+}
