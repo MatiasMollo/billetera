@@ -2,7 +2,7 @@ import models.users as users
 import json
 
 #Constants
-USER_PATH = 'mockDataTests/mockUsers.json'
+USER_PATH = './mockDataTests/mockUsers.json'
 users.USER_PATH = USER_PATH #guardado de Path para modelo usuarios
 
 #Functions

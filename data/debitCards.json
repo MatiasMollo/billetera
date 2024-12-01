@@ -1,1 +1,17 @@
-{}
+{
+    "Tester4": {
+        "card_number": "9072684411957987",
+        "valid_from": [
+            2024,
+            11,
+            18
+        ],
+        "expires_end": [
+            2029,
+            11,
+            18
+        ],
+        "security_code": "0973",
+        "full_name": "Four Tester"
+    }
+}
