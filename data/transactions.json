@@ -1,1 +1,16 @@
-{}
+{
+    "1": {
+        "nombre_usuario": "mmollo",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            11,
+            30,
+            23,
+            2,
+            30
+        ],
+        "monto": 100.0,
+        "cuenta_origen": "28342540744"
+    }
+}

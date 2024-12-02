@@ -16,9 +16,6 @@ def createDebitCard(username):
 
     users = usuarios.getUser()
 
-    userFullName = users[username]["apellido"] + " " + users[username]["nombre"]
-
-    # Cuando veamos excepciones vamos a contemplar el caso de que entren parametros vacios
     with open(DEBIT_CARD_PATH, 'r') as file:
         debit_cards = json.load(file)
 
@@ -27,16 +24,18 @@ def createDebitCard(username):
         print("Ya tienes una tarjeta de débito asociada a tu cuenta.")
         create = False
 
-    if create:
+    if create and username in users:
         while True:
             card_number = ''.join([str(random.randint(0, 9)) for _ in range(16)])
             if not any(card_number in card for card in debit_cards.values()):
                 break
+        userFullName = users[username]["apellido"] + " " + users[username]["nombre"]
 
         security_code = ''.join([str(random.randint(0, 9)) for _ in range(4)])
 
         valid_from = datetime.now().timetuple()[:3]
         expires_end = (datetime.now().year + 5, datetime.now().month, datetime.now().day)
+        
         debit_card_details = {
             "card_number": card_number,
             "valid_from": valid_from,

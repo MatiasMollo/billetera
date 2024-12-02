@@ -8,7 +8,6 @@ import re
 
 TRANSACTION_PATH = "data/transactions.json"
 
-totalTransacciones = 231
 
 def getTransaction(id = None):
     """
@@ -21,7 +20,10 @@ def getTransaction(id = None):
     data = json.loads(file.read())
 
     if id:
-        transactions = data[id]
+        try:
+            transactions = data[id]
+        except KeyError:
+            raise KeyError(f"La transacción con ID {id} no existe")
     else:
         transactions = data
     
@@ -248,13 +250,14 @@ def showReports(nombreUsuario):
     print("2. Mostrar movimientos más recientes")
     print("3. Mostrar movimientos por tipo de transacción")
     print("4. Mostrar gastos totales en un mes")
-    print("5. Volver")
+    print("5. Mostrar ingresos totales en un mes")
+    print("6. Volver")
     print("===================")
     opcion = input()
 
     transacciones = getTransaction()
     
-    while opcion not in ["1","2","3","4","5"]:
+    while opcion not in ["1","2","3","4","5","6"]:
         print("Por favor, ingrese una opción correcta: ")
         opcion = input()
     if opcion == "1":
@@ -266,6 +269,8 @@ def showReports(nombreUsuario):
         showTransactionsByType(nombreUsuario, tipoTransaccion, transacciones)
     elif opcion == "4":
         showExpensesByMonth(nombreUsuario, transacciones)
+    elif opcion == "5":
+        showIncomeByMonth(nombreUsuario, transacciones)
 
 
 #Submenú de los reportes a mostrar por tipo de transacción
@@ -525,4 +530,53 @@ def requestLoan(nombreUsuario):
             else:
                 preguntar = False
 
-    return ret     
+    return ret
+
+
+def calculateIncome(corte, total=0.0):
+    if not corte:
+        return total
+
+    transaccion = corte[0][1]
+    monto = transaccion["monto"]
+
+    total += monto
+
+    return calculateIncome(corte[1:], total)
+
+
+def printIncome(listaIngresos):
+    if listaIngresos:
+        transaccion = listaIngresos[0][1]
+        nombreUsuario = transaccion["nombre_usuario"]
+        tipoTransaccion = transaccion["tipo_transaccion"]
+        fecha = transaccion["fecha"]
+        monto = transaccion["monto"]
+
+        print(f"Nombre de usuario: {nombreUsuario}")
+        print(f"Tipo de transacción: {tipoTransaccion}")
+        print(f"Fecha: {'/'.join(map(str, fecha[:3]))}")
+        print(f"Monto: {monto} ")
+        print()
+
+        printIncome(listaIngresos[1:])
+
+
+def showIncomeByMonth(nombreUsuario, transacciones):
+    error = True
+    while error:
+        try:
+            mes = int(input("Indique qué mes desea consultar (1-12): "))
+            error = False
+        except Exception:
+            print("El dato ingresado no es válido, intente nuevamente")
+
+    corte = list(filter(lambda valor : valor[1]["nombre_usuario"] == nombreUsuario and valor[1]["tipo_transaccion"] == "ingreso" and valor[1]["fecha"][1] == mes, transacciones.items()))
+
+    if not corte:
+        print("No se encontraron ingresos en este mes")
+    else:
+        total_ingresos = calculateIncome(corte)
+        print(f"El total de ingresos del mes fueron {total_ingresos} pesos")
+        print()
+        printIncome(corte)

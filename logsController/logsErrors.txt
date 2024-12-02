@@ -17,3 +17,11 @@
 [17/11/2024 18:41:25]: ValueError   File "c:\Users\Matias\OneDrive\Documents\uade\billetera\main.py", line 118, in <module>
     option = int(option)
              ^^^^^^^^^^^
+
+[19/11/2024 15:51:30]: ValueError   File "c:\Users\cdavi\Documents\UADE\Segundo cuatrimestre\Algoritmos y Estructuras de Datos I\TPO\Codigo\billetera\main.py", line 118, in <module>
+    option = int(option)
+             ^^^^^^^^^^^
+
+[26/11/2024 08:56:02]: TypeError   File "c:\Users\cdavi\Documents\UADE\Segundo cuatrimestre\Algoritmos y Estructuras de Datos I\TPO\Codigo\billetera\models\transactions.py", line 584, in showIncomeByMonth
+    printIncome(total_ingresos, corte)
+
