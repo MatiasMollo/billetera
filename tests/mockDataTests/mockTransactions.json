@@ -1,1 +1,324 @@
-{"1": {"nombre_usuario": "Tester4", "tipo_transaccion": "ingreso", "fecha": [2024, 11, 18, 22, 32, 40], "monto": 2000.0, "cuenta_origen": "44858213860"}, "2": {"nombre_usuario": "Tester4", "tipo_transaccion": "envioExterno", "fecha": [2024, 11, 18, 22, 33, 23], "monto": 200.0, "CVU_destino": "12345678901"}, "3": {"nombre_usuario": "Tester4", "tipo_transaccion": "pagoServicio", "fecha": [2024, 11, 18, 22, 34, 14], "monto": 300.0, "numero_factura": "ER5643"}, "4": {"nombre_usuario": "Tester4", "tipo_transaccion": "envioInterno", "fecha": [2024, 11, 18, 22, 35, 45], "monto": 100.0, "CVU_destino": "31576359856"}, "5": {"nombre_usuario": "Tester4", "tipo_transaccion": "ingreso", "fecha": [2024, 11, 18, 22, 41, 6], "monto": 20000.0, "cuenta_origen": "44858213860"}, "6": {"nombre_usuario": "Tester4", "tipo_transaccion": "ingreso", "fecha": [2024, 11, 19, 18, 18, 1], "monto": 250.0, "cuenta_origen": "44858213860"}, "7": {"nombre_usuario": "Tester4", "tipo_transaccion": "envioInterno", "fecha": [2024, 11, 19, 18, 20, 20], "monto": 650.0, "CVU_destino": "31576359856"}, "8": {"nombre_usuario": "Tester4", "tipo_transaccion": "pagoServicio", "fecha": [2024, 11, 19, 18, 22, 2], "monto": 500.0, "numero_factura": "TE-5421-2"}, "9": {"nombre_usuario": "Tester4", "tipo_transaccion": "pagoServicio", "fecha": [2024, 11, 19, 18, 46, 44], "monto": 300.0, "numero_factura": "456789-5"}, "10": {"nombre_usuario": "Tester4", "tipo_transaccion": "ingreso", "fecha": [2024, 11, 19, 18, 48, 46], "monto": 200000.0, "cuenta_origen": "44858213860"}, "11": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 8, 55, 47], "monto": 100, "cuenta_origen": "13875898947"}, "12": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 8, 57, 23], "monto": 100, "cuenta_origen": "40979273546"}, "13": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 9, 28, 10], "monto": 100, "cuenta_origen": "62158520145"}, "14": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 9, 28, 45], "monto": 100, "cuenta_origen": "48311110102"}, "15": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 9, 31, 34], "monto": 100, "cuenta_origen": "10343580205"}, "16": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 9, 40, 3], "monto": 100, "cuenta_origen": "61591463836"}, "17": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 9, 40, 32], "monto": 100, "cuenta_origen": "10427516488"}, "18": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 9, 40, 59], "monto": 100, "cuenta_origen": "42206878175"}, "19": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 9, 41, 21], "monto": 100, "cuenta_origen": "17200744249"}, "20": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 9, 41, 41], "monto": 100, "cuenta_origen": "56693415484"}, "21": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 9, 43, 34], "monto": 100, "cuenta_origen": "46179718748"}, "22": {"nombre_usuario": "username", "tipo_transaccion": "ingreso", "fecha": [2024, 12, 1, 9, 43, 58], "monto": 100, "cuenta_origen": "50002229820"}}
+{
+    "1": {
+        "nombre_usuario": "Tester4",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            11,
+            18,
+            22,
+            32,
+            40
+        ],
+        "monto": 2000.0,
+        "cuenta_origen": "44858213860"
+    },
+    "2": {
+        "nombre_usuario": "Tester4",
+        "tipo_transaccion": "envioExterno",
+        "fecha": [
+            2024,
+            11,
+            18,
+            22,
+            33,
+            23
+        ],
+        "monto": 200.0,
+        "CVU_destino": "12345678901"
+    },
+    "3": {
+        "nombre_usuario": "Tester4",
+        "tipo_transaccion": "pagoServicio",
+        "fecha": [
+            2024,
+            11,
+            18,
+            22,
+            34,
+            14
+        ],
+        "monto": 300.0,
+        "numero_factura": "ER5643"
+    },
+    "4": {
+        "nombre_usuario": "Tester4",
+        "tipo_transaccion": "envioInterno",
+        "fecha": [
+            2024,
+            11,
+            18,
+            22,
+            35,
+            45
+        ],
+        "monto": 100.0,
+        "CVU_destino": "31576359856"
+    },
+    "5": {
+        "nombre_usuario": "Tester4",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            11,
+            18,
+            22,
+            41,
+            6
+        ],
+        "monto": 20000.0,
+        "cuenta_origen": "44858213860"
+    },
+    "6": {
+        "nombre_usuario": "Tester4",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            11,
+            19,
+            18,
+            18,
+            1
+        ],
+        "monto": 250.0,
+        "cuenta_origen": "44858213860"
+    },
+    "7": {
+        "nombre_usuario": "Tester4",
+        "tipo_transaccion": "envioInterno",
+        "fecha": [
+            2024,
+            11,
+            19,
+            18,
+            20,
+            20
+        ],
+        "monto": 650.0,
+        "CVU_destino": "31576359856"
+    },
+    "8": {
+        "nombre_usuario": "Tester4",
+        "tipo_transaccion": "pagoServicio",
+        "fecha": [
+            2024,
+            11,
+            19,
+            18,
+            22,
+            2
+        ],
+        "monto": 500.0,
+        "numero_factura": "TE-5421-2"
+    },
+    "9": {
+        "nombre_usuario": "Tester4",
+        "tipo_transaccion": "pagoServicio",
+        "fecha": [
+            2024,
+            11,
+            19,
+            18,
+            46,
+            44
+        ],
+        "monto": 300.0,
+        "numero_factura": "456789-5"
+    },
+    "10": {
+        "nombre_usuario": "Tester4",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            11,
+            19,
+            18,
+            48,
+            46
+        ],
+        "monto": 200000.0,
+        "cuenta_origen": "44858213860"
+    },
+    "11": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            8,
+            55,
+            47
+        ],
+        "monto": 100,
+        "cuenta_origen": "13875898947"
+    },
+    "12": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            8,
+            57,
+            23
+        ],
+        "monto": 100,
+        "cuenta_origen": "40979273546"
+    },
+    "13": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            9,
+            28,
+            10
+        ],
+        "monto": 100,
+        "cuenta_origen": "62158520145"
+    },
+    "14": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            9,
+            28,
+            45
+        ],
+        "monto": 100,
+        "cuenta_origen": "48311110102"
+    },
+    "15": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            9,
+            31,
+            34
+        ],
+        "monto": 100,
+        "cuenta_origen": "10343580205"
+    },
+    "16": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            9,
+            40,
+            3
+        ],
+        "monto": 100,
+        "cuenta_origen": "61591463836"
+    },
+    "17": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            9,
+            40,
+            32
+        ],
+        "monto": 100,
+        "cuenta_origen": "10427516488"
+    },
+    "18": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            9,
+            40,
+            59
+        ],
+        "monto": 100,
+        "cuenta_origen": "42206878175"
+    },
+    "19": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            9,
+            41,
+            21
+        ],
+        "monto": 100,
+        "cuenta_origen": "17200744249"
+    },
+    "20": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            9,
+            41,
+            41
+        ],
+        "monto": 100,
+        "cuenta_origen": "56693415484"
+    },
+    "21": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            9,
+            43,
+            34
+        ],
+        "monto": 100,
+        "cuenta_origen": "46179718748"
+    },
+    "22": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            1,
+            9,
+            43,
+            58
+        ],
+        "monto": 100,
+        "cuenta_origen": "50002229820"
+    },
+    "23": {
+        "nombre_usuario": "username",
+        "tipo_transaccion": "ingreso",
+        "fecha": [
+            2024,
+            12,
+            2,
+            20,
+            13,
+            1
+        ],
+        "monto": 100,
+        "cuenta_origen": "91998794195"
+    }
+}
