@@ -168,7 +168,6 @@ def getBalance(username):
 
     return saldo
 
-#! Esta función no se está utilizando (pero debería)
 def verificarDNIunico(dni, users):
     for user in users.values():
         if user["dni"] == dni:
