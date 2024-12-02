@@ -13,7 +13,7 @@ formatter = logging.Formatter('%(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-fake_data_path = "tests/mockDataTests/mockDebitCards.json"
+fake_data_path = "mockDataTests/mockDebitCards.json"
 fake_users = {
     "userPrueba": {
         "nombre": "prueba",
